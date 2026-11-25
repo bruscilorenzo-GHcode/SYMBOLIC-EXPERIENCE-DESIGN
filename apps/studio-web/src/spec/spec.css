@@ -1,0 +1,1013 @@
+.spec-shell {
+  --spec-paper: #e7ebed;
+  --spec-paper-light: #f4f7f8;
+  --spec-ink: #0b1418;
+  --spec-ash: #aab8bf;
+  --spec-fern: #0f6b66;
+  --spec-amber: #ffb000;
+  --spec-brick: #c24122;
+  color-scheme: light;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--spec-paper);
+  color: var(--spec-ink);
+  font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.spec-shell button,
+.spec-shell input,
+.spec-shell select {
+  font: inherit;
+}
+
+.spec-topbar {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 0 16px;
+  background: var(--spec-paper-light);
+  border-bottom: 1px solid rgba(11, 20, 24, 0.2);
+  flex: 0 0 auto;
+}
+
+.spec-back,
+.spec-site-link,
+.spec-return {
+  border: 1px solid rgba(11, 20, 24, 0.24);
+  background: transparent;
+  color: var(--spec-ink);
+  padding: 8px 10px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spec-return {
+  background: var(--spec-ink);
+  color: var(--spec-paper-light);
+  border-color: var(--spec-ink);
+}
+
+.spec-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spec-brand-mark {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--spec-fern);
+  color: var(--spec-paper-light);
+  font: 400 19px/1 'Cormorant Garamond', Georgia, serif;
+}
+
+.spec-brand strong {
+  display: block;
+  font-size: 15px;
+  letter-spacing: -0.04em;
+}
+
+.spec-brand small {
+  display: block;
+  color: rgba(11, 20, 24, 0.68);
+  font: 500 7px/1.2 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.spec-tabs {
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.spec-tabs button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(11, 20, 24, 0.68);
+  padding: 8px 10px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.spec-tabs button.is-active {
+  border-color: rgba(11, 20, 24, 0.22);
+  background: var(--spec-paper);
+  color: var(--spec-ink);
+}
+
+.spec-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spec-lang {
+  display: inline-flex;
+  border: 1px solid rgba(11, 20, 24, 0.22);
+}
+
+.spec-lang button {
+  border: 0;
+  background: transparent;
+  color: var(--spec-ink);
+  padding: 8px 9px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-lang button.is-active {
+  background: var(--spec-ink);
+  color: var(--spec-paper-light);
+}
+
+.spec-shell .spec-sync-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  background: var(--spec-paper-light);
+  border-bottom: 1px solid rgba(11, 20, 24, 0.14);
+  color: rgba(11, 20, 24, 0.66);
+  font: 400 8px/1.3 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-shell .spec-sync-row strong {
+  color: var(--spec-ink);
+  font-weight: 600;
+}
+
+.spec-shell .spec-sync-row small {
+  color: rgba(11, 20, 24, 0.68);
+  font-size: 7px;
+}
+
+.spec-shell .spec-sync-row.is-synced {
+  border-left: 3px solid var(--spec-fern);
+}
+
+.spec-shell .spec-sync-row.is-dirty {
+  border-left: 3px solid var(--spec-amber);
+}
+
+.spec-shell .spec-sync-row .sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--spec-amber);
+}
+
+.spec-shell .spec-sync-row.is-synced .sync-dot {
+  background: var(--spec-fern);
+}
+
+.spec-shell .spec-sync-row button {
+  margin-left: auto;
+  border: 1px solid var(--spec-fern);
+  background: transparent;
+  color: var(--spec-fern);
+  padding: 5px 8px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+/* Blueprint workspace */
+.spec-workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 340px;
+}
+
+.spec-shell .panel {
+  background: var(--spec-paper-light);
+  color: var(--spec-ink);
+  border-color: rgba(11, 20, 24, 0.16);
+}
+
+.spec-shell .left-panel {
+  border-right: 1px solid rgba(11, 20, 24, 0.18);
+}
+
+.spec-shell .right-panel {
+  border-left: 1px solid rgba(11, 20, 24, 0.18);
+}
+
+.spec-shell .panel h2 {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .panel section {
+  border-bottom-color: rgba(11, 20, 24, 0.14);
+}
+
+.spec-shell .toggle-row {
+  color: rgba(11, 20, 24, 0.78);
+}
+
+.spec-shell .entity-list button {
+  color: var(--spec-ink);
+}
+
+.spec-shell .entity-list button:hover,
+.spec-shell .entity-list button.is-active {
+  background: #e3eef0;
+  border-color: rgba(15, 107, 102, 0.35);
+}
+
+.spec-shell .entity-list strong {
+  color: var(--spec-ink);
+}
+
+.spec-shell .entity-list small {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .swatch.speaker {
+  background: var(--spec-fern);
+}
+
+.spec-shell .add-row select,
+.spec-shell .number-field input,
+.spec-shell .design-field input,
+.spec-shell .design-field select {
+  background: var(--spec-paper);
+  border-color: rgba(11, 20, 24, 0.24);
+  color: var(--spec-ink);
+}
+
+.spec-shell .add-row button,
+.spec-shell .button-row button,
+.spec-shell .number-field input {
+  color: var(--spec-ink);
+}
+
+.spec-shell .add-row button {
+  border-color: rgba(11, 20, 24, 0.28);
+  background: var(--spec-fern);
+  color: var(--spec-paper-light);
+}
+
+.spec-shell .facts dt {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .number-field {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .number-field span {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .number-field input {
+  color: var(--spec-ink);
+  background: var(--spec-paper);
+  border-color: rgba(11, 20, 24, 0.22);
+}
+
+.spec-shell .field-grid {
+  color: var(--spec-ink);
+}
+
+.spec-shell .button-row button.danger {
+  color: #0f6b66;
+}
+
+.spec-shell .strata-grid strong,
+.spec-shell .mini-list strong {
+  color: var(--spec-ink);
+}
+
+.spec-shell .facts dd {
+  color: var(--spec-ink);
+}
+
+.spec-shell .muted {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .catalog-note p {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell button.danger {
+  border-color: rgba(143, 50, 8, 0.5);
+  background: rgba(143, 50, 8, 0.09);
+  color: #0f6b66;
+}
+
+.spec-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0b1217;
+}
+
+.spec-stage-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  background: var(--spec-paper-light);
+  border-bottom: 1px solid rgba(11, 20, 24, 0.18);
+  flex: 0 0 auto;
+}
+
+.spec-stage-toolbar > span {
+  margin-right: auto;
+  color: var(--spec-ink);
+  font: 600 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spec-stage-toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(11, 20, 24, 0.68);
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.spec-stage-toolbar select,
+.spec-stage-toolbar button {
+  border: 1px solid rgba(11, 20, 24, 0.24);
+  background: var(--spec-paper);
+  color: var(--spec-ink);
+  padding: 5px 7px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-stage-toolbar button.is-active {
+  background: var(--spec-fern);
+  border-color: var(--spec-fern);
+  color: var(--spec-paper-light);
+}
+
+.spec-stage-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.spec-stage-hud {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.spec-stage-hud span {
+  padding: 4px 6px;
+  background: rgba(7, 19, 20, 0.72);
+  border: 1px solid rgba(198, 226, 206, 0.18);
+  color: rgba(244, 247, 248, 0.72);
+  font: 400 7px/1.3 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-right {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--spec-paper-light);
+  border-left: 1px solid rgba(11, 20, 24, 0.18);
+}
+
+.spec-right .panel {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  border-left: 0;
+}
+
+.spec-osc-card {
+  flex: 0 0 auto;
+  margin: 10px;
+  padding: 11px;
+  border: 1px solid rgba(11, 20, 24, 0.18);
+  background: var(--spec-paper);
+}
+
+.spec-osc-card--error {
+  border-left: 3px solid var(--spec-brick);
+}
+
+.spec-osc-card--connected {
+  border-left: 3px solid var(--spec-fern);
+}
+
+.spec-osc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.spec-osc-head h3 {
+  margin: 0;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spec-osc-head span {
+  color: rgba(11, 20, 24, 0.68);
+  font: 500 7px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.spec-osc-card--connected .spec-osc-head span {
+  color: var(--spec-fern);
+}
+
+.spec-osc-card--connecting .spec-osc-head span {
+  color: #7a4b00;
+}
+
+.spec-osc-card--error .spec-osc-head span {
+  color: var(--spec-brick);
+}
+
+.spec-osc-card p {
+  margin: 8px 0;
+  color: rgba(11, 20, 24, 0.66);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.spec-osc-card code {
+  display: block;
+  padding: 5px 6px;
+  background: rgba(11, 20, 24, 0.06);
+  color: var(--spec-ink);
+  font: 400 8px/1.4 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-osc-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.spec-osc-actions button {
+  border: 1px solid rgba(11, 20, 24, 0.26);
+  background: transparent;
+  color: var(--spec-ink);
+  padding: 6px 8px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.spec-osc-actions small {
+  color: rgba(11, 20, 24, 0.68);
+  font: 400 7px/1.3 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Pages */
+.spec-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 20px 40px;
+  background: var(--spec-paper);
+}
+
+.spec-shell .spec-table-scroll {
+  background: var(--spec-paper-light);
+  border-color: rgba(11, 20, 24, 0.18);
+}
+
+.spec-shell .spec-table th {
+  background: #e4ebee;
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .spec-table td,
+.spec-shell .spec-table th {
+  border-bottom-color: rgba(11, 20, 24, 0.12);
+  color: var(--spec-ink);
+}
+
+.spec-shell .spec-table strong {
+  color: var(--spec-ink);
+}
+
+.spec-shell .spec-table small {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .scattering-row td {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .metric {
+  background: var(--spec-paper-light);
+  border-color: rgba(11, 20, 24, 0.16);
+}
+
+.spec-shell .metric span,
+.spec-shell .metric strong {
+  color: var(--spec-ink);
+}
+
+.spec-shell .network-summary span {
+  border-color: rgba(11, 20, 24, 0.2);
+  background: var(--spec-paper-light);
+  color: rgba(11, 20, 24, 0.7);
+}
+
+.spec-shell .rationale-list {
+  color: rgba(11, 20, 24, 0.66);
+}
+
+.spec-shell .landscape-panel {
+  border-top-color: rgba(11, 20, 24, 0.16);
+}
+
+.spec-shell .landscape-panel h2,
+.spec-shell .landscape-panel h3 {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .strata-grid div {
+  background: var(--spec-paper-light);
+  border-color: rgba(11, 20, 24, 0.14);
+}
+
+.spec-shell .strata-grid span,
+.spec-shell .data-music small,
+.spec-shell .species-group span,
+.spec-shell .mini-list small {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .mini-list li {
+  border-bottom-color: rgba(11, 20, 24, 0.12);
+}
+
+.spec-shell .mini-list span,
+.spec-shell .species-group em {
+  color: var(--spec-ink);
+}
+
+.spec-shell .chip,
+.spec-shell .planting-summary span,
+.spec-shell .acoustic-targets span {
+  border-color: rgba(11, 20, 24, 0.2);
+  background: var(--spec-paper-light);
+  color: rgba(11, 20, 24, 0.66);
+}
+
+/* Geometry workspace: keep the dark drafting board, lighten the shell */
+.spec-geometry {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.spec-shell .design-workspace {
+  background: var(--spec-paper);
+}
+
+.spec-shell .design-toolbar,
+.spec-shell .design-viewport,
+.spec-shell .design-center {
+  background: var(--spec-paper);
+  color: var(--spec-ink);
+}
+
+.spec-shell .design-toolbar {
+  border-bottom-color: rgba(11, 20, 24, 0.18);
+}
+
+.spec-shell .design-toolbar span {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .segmented {
+  background: var(--spec-paper-light);
+  border-color: rgba(11, 20, 24, 0.2);
+}
+
+.spec-shell .segmented button {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .segmented button.is-active {
+  background: var(--spec-ink);
+  color: var(--spec-paper-light);
+}
+
+.spec-shell .design-toolbar strong {
+  color: var(--spec-ink);
+}
+
+.spec-shell .plan-toolbar {
+  background: var(--spec-paper-light);
+  color: var(--spec-ink);
+  border-bottom-color: rgba(11, 20, 24, 0.16);
+}
+
+.spec-shell .plan-hint {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .zoom-controls button {
+  color: var(--spec-ink);
+}
+
+.spec-shell .direction-card,
+.spec-shell .palette-button,
+.spec-shell .imported-card {
+  background: var(--spec-paper);
+  border-color: rgba(11, 20, 24, 0.18);
+  color: var(--spec-ink);
+}
+
+.spec-shell .direction-card small,
+.spec-shell .palette-button,
+.spec-shell .import-status,
+.spec-shell .muted {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-shell .direction-card.is-active,
+.spec-shell .palette-button.is-active {
+  background: #e0edef;
+  border-color: var(--spec-fern);
+  color: var(--spec-ink);
+}
+
+.spec-shell .design-hud span {
+  background: rgba(244, 247, 248, 0.86);
+  border-color: rgba(11, 20, 24, 0.16);
+  color: rgba(11, 20, 24, 0.68);
+}
+
+@media (max-width: 1320px) {
+  .spec-workspace {
+    grid-template-columns: 250px minmax(0, 1fr) 310px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .spec-topbar {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .spec-top-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+  }
+
+  .spec-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: 62vh auto auto;
+    overflow-y: auto;
+  }
+
+  .spec-stage {
+    min-height: 62vh;
+  }
+
+  .spec-shell .left-panel,
+  .spec-right {
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px solid rgba(11, 20, 24, 0.18);
+  }
+
+  .spec-right .panel {
+    max-height: 42vh;
+  }
+}
+
+@media (max-width: 760px) {
+  .spec-topbar {
+    grid-template-columns: auto 1fr;
+    padding: 8px 12px;
+  }
+
+  .spec-brand {
+    display: none;
+  }
+
+  .spec-tabs {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .spec-return,
+  .spec-site-link {
+    padding: 7px;
+    font-size: 7px;
+  }
+
+  .spec-stage-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .spec-stage-toolbar > span {
+    width: 100%;
+  }
+
+  .spec-page {
+    padding: 12px;
+  }
+}
+
+/* Geometry workspace */
+.spec-geometry-workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr) 330px;
+  background: var(--spec-paper);
+}
+
+.spec-geometry-left,
+.spec-geometry-right {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px;
+  background: var(--spec-paper-light);
+}
+
+.spec-geometry-left {
+  border-right: 1px solid rgba(11, 20, 24, 0.18);
+}
+
+.spec-geometry-right {
+  border-left: 1px solid rgba(11, 20, 24, 0.18);
+}
+
+.spec-geometry-left > section,
+.spec-geometry-right > section {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(11, 20, 24, 0.14);
+}
+
+.spec-geometry-left h2,
+.spec-geometry-right h2 {
+  margin: 0 0 8px;
+  color: rgba(11, 20, 24, 0.66);
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spec-geometry-left .direction-section,
+.spec-geometry-left .music-panel,
+.spec-geometry-left .soundscape-panel {
+  display: none;
+}
+
+.spec-geometry-center {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--spec-paper);
+}
+
+.spec-geometry-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 12px;
+  background: var(--spec-paper-light);
+  border-bottom: 1px solid rgba(11, 20, 24, 0.16);
+}
+
+.spec-geometry-toolbar strong {
+  display: block;
+  font-size: 10px;
+}
+
+.spec-geometry-toolbar span {
+  display: block;
+  color: rgba(11, 20, 24, 0.68);
+  font: 400 8px/1.3 'IBM Plex Mono', ui-monospace, monospace;
+  margin-top: 2px;
+}
+
+.spec-geometry-switch {
+  display: inline-flex;
+  border: 1px solid rgba(11, 20, 24, 0.24);
+}
+
+.spec-geometry-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--spec-ink);
+  padding: 7px 9px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.spec-geometry-switch button.is-active {
+  background: var(--spec-ink);
+  color: var(--spec-paper-light);
+}
+
+.spec-geometry-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #0b1217;
+}
+
+.spec-geometry-canvas .plan-shell {
+  height: 100%;
+}
+
+.spec-geometry-canvas .plan-toolbar {
+  background: var(--spec-paper-light);
+  color: var(--spec-ink);
+}
+
+.spec-geometry-canvas .plan-canvas {
+  flex: 1;
+  min-height: 0;
+}
+
+.spec-geometry-canvas .plan-canvas svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.spec-geometry-right .empty-inspector h2,
+.spec-geometry-right .brief-panel h2 {
+  color: rgba(11, 20, 24, 0.66);
+}
+
+.spec-geometry-right .facts div,
+.spec-geometry-right .facts dt,
+.spec-geometry-right .facts dd {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-geometry-right .number-field span,
+.spec-geometry-right .design-field span {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-geometry-right input,
+.spec-geometry-right select,
+.spec-geometry-left input,
+.spec-geometry-left select {
+  background: var(--spec-paper);
+  border-color: rgba(11, 20, 24, 0.24);
+  color: var(--spec-ink);
+}
+
+.spec-geometry-left .palette-button {
+  background: var(--spec-paper);
+  border-color: rgba(11, 20, 24, 0.18);
+  color: var(--spec-ink);
+}
+
+.spec-geometry-left .palette-button.is-active {
+  background: #e0edef;
+  border-color: var(--spec-fern);
+}
+
+.spec-geometry-left .wide-button,
+.spec-geometry-right .wide-button {
+  background: var(--spec-ink);
+  color: var(--spec-paper-light);
+  border-color: var(--spec-ink);
+}
+
+.spec-geometry-left .import-status,
+.spec-geometry-left .muted,
+.spec-geometry-right .muted {
+  color: rgba(11, 20, 24, 0.68);
+}
+
+.spec-geometry-right .planting-summary span,
+.spec-geometry-right .acoustic-targets span {
+  border-color: rgba(11, 20, 24, 0.2);
+  background: var(--spec-paper);
+  color: rgba(11, 20, 24, 0.64);
+}
+
+.spec-geometry-right .rationale-list {
+  color: rgba(11, 20, 24, 0.66);
+}
+
+@media (max-width: 1200px) {
+  .spec-geometry-workspace {
+    grid-template-columns: 270px minmax(0, 1fr) 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  .spec-geometry-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: 55vh auto auto;
+    overflow-y: auto;
+  }
+
+  .spec-geometry-left {
+    border-right: 0;
+    border-top: 1px solid rgba(11, 20, 24, 0.18);
+  }
+
+  .spec-geometry-right {
+    border-left: 0;
+    border-top: 1px solid rgba(11, 20, 24, 0.18);
+  }
+}
+
+
+.spec-shell ::selection,
+.spec-shell::selection {
+  background: #ffb000 !important;
+  color: #0b1418 !important;
+  -webkit-text-fill-color: #0b1418 !important;
+  text-shadow: none;
+}
+
+.spec-tab-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accessible hover/focus language for the light spec shell. */
+.spec-shell button:not(:disabled):hover {
+  border-color: var(--spec-brick);
+  background: #d9efec;
+  color: var(--spec-ink);
+}
+
+.spec-shell button.is-active:not(:disabled):hover {
+  box-shadow: inset 0 0 0 2px var(--spec-brick);
+}
+
+.spec-shell :is(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--spec-amber);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--spec-ink);
+}
+
+.spec-tabs button {
+  min-height: 36px;
+}
+
+@media (max-width: 1000px) {
+  .spec-topbar {
+    grid-template-columns: auto 1fr;
+  }
+
+  .spec-tabs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    order: 2;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .spec-top-actions {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 760px) {
+  .spec-tabs {
+    gap: 2px;
+  }
+
+  .spec-tabs button {
+    min-height: 42px;
+    padding: 7px 6px;
+    font-size: 7px;
+    letter-spacing: 0.03em;
+  }
+}

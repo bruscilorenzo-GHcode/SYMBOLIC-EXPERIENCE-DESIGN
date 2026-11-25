@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": [],
+    "baseUrl": "../..",
+    "paths": {
+      "@aura-spec/core-acoustics": ["packages/core-acoustics/src/index.ts"],
+      "@aura-spec/landscape-culture": ["packages/landscape-culture/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "spatial-aura-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AURA-SPEC — architectural acoustics, polar spatialisation and co-composition platform",
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @aura-spec/studio-web dev",
+    "dev:relay": "pnpm --filter @aura-spec/osc-relay dev",
+    "dev:collab": "pnpm --filter @aura-spec/collab-server dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.2",
+    "tsup": "^8.3.5",
+    "turbo": "^2.3.3",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

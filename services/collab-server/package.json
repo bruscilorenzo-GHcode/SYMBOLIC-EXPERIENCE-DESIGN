@@ -1,0 +1,17 @@
+{
+  "name": "@aura-spec/collab-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Yjs WebSocket collaboration relay for AURA-SPEC studios",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.19.0",
+    "ws": "^8.18.0",
+    "y-websocket": "^2.0.0",
+    "yjs": "^13.6.20"
+  }
+}

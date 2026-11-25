@@ -1,0 +1,15 @@
+{
+  "name": "@aura-spec/osc-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local WebSocket → UDP relay for binary OSC packets from the AURA studio",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.19.0",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@aura-spec/design-bridge",
+  "version": "0.1.0",
+  "description": "Bidirectional design bridge: music features → architectural intent, architecture → musical soundscape",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aura-spec/core-acoustics": "workspace:*",
+    "@aura-spec/landscape-culture": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
