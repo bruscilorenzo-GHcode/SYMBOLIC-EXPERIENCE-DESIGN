@@ -7,8 +7,7 @@ export type Place = 'mas' | 'healing' | 'metaplace'
 
 /**
  * The MUSI-CO cross-ontological bar: one app, two sections, one path.
- * SED (Symbolic Experience Design) holds two sections: Healing (Brusci & Wilk),
- * which opens onto the Metaplace (Brusci). The path runs across them:
+ * SED (Symbolic Experience Design) holds two sections: Healing and Desire (Metaplace). The path runs across them:
  * space → sound modules → character → session → improvement.
  */
 export function SystemBar({ place, actions }: { place: Place; actions?: ReactNode }) {
@@ -21,8 +20,8 @@ export function SystemBar({ place, actions }: { place: Place; actions?: ReactNod
 
   const places: Array<{ id: Place; name: string; sub: string; go: () => void }> = [
     { id: 'mas', name: 'SED', sub: 'a sensorial renaissance', go: () => setAppView('site') },
-    { id: 'healing', name: 'Healing Room', sub: 'Brusci · Wilk', go: () => setAppView('healing') },
-    { id: 'metaplace', name: 'Desire', sub: 'Metaplace · Brusci', go: () => setAppView('metaplace') },
+    { id: 'healing', name: 'Healing Room', sub: t('Diagnosi e cura', 'Diagnosis and care'), go: () => setAppView('healing') },
+    { id: 'metaplace', name: 'Desire', sub: 'Metaplace', go: () => setAppView('metaplace') },
   ]
 
   const goStep = (value: RoomStep | 5): void => {

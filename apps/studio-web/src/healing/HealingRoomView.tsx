@@ -500,15 +500,14 @@ export function HealingRoomView() {
           <button type="button" className="hr-sheet-btn is-meta" onClick={() => setAppView('metaplace')}>
             {tt('Usala nel Metaplace', 'Use it in the Metaplace')} →
           </button>
-          <p className="hr-credit">
-            Healing Room — design<br />
-            <strong>Lorenzo Brusci</strong> · <strong>Greg Wilk</strong>, {tt('architetto', 'architect')}
-          </p>
           <p className="hr-fine">
             {tt('Concept di studio: metrature e canali sono indicativi, nessun dato sanitario reale viene raccolto.', 'Study concept: areas and channels are indicative; no real health data is collected.')}
           </p>
         </aside>
       </div>
+      <footer className="sys-credit">
+        Healing Room — design <strong>Lorenzo Brusci</strong> · <strong>Greg Wilk</strong>, {tt('architetto', 'architect')}
+      </footer>
     </div>
   )
 }

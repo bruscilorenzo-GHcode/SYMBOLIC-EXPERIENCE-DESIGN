@@ -319,3 +319,15 @@
     height: 12px;
   }
 }
+
+.sys-credit {
+  padding: 20px max(4vw, 20px);
+  font: 400 11px/1.6 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.sys-credit strong {
+  font-weight: 600;
+}

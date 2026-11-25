@@ -501,10 +501,6 @@ export function MetaplaceView() {
             <div><b>{Math.round(plan.totalMinutes / 60)}h</b><small>{tt('di processo', 'of process')}</small></div>
             <div><b>{plan.assistants.length}</b><small>{tt('assistenti', 'assistants')}</small></div>
           </div>
-          <p className="mp-credit">
-            Metaplace — {tt('concept e design DNA', 'concept and design DNA')}<br />
-            <strong>Lorenzo Brusci</strong>
-          </p>
           <p className="mp-fine mp-fine--dark">
             {tt(
               'Un luogo ibrido 24/7: club immersivo, rehab fisica e spirituale, atelier, teatro intimo. Il System propone, la persona decide; nessuna biometria reale viene raccolta.',
@@ -513,6 +509,9 @@ export function MetaplaceView() {
           </p>
         </aside>
       </div>
+      <footer className="sys-credit">
+        Metaplace — {tt('concept e design DNA', 'concept and design DNA')} <strong>Lorenzo Brusci</strong>
+      </footer>
     </div>
   )
 }
