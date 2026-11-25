@@ -405,7 +405,7 @@ export function MetaplaceView() {
             {next ? (
               <button type="button" className="is-primary" onClick={() => setStep(next.id)}>{tt(next.it, next.en)} →</button>
             ) : (
-              <button type="button" className="is-primary" onClick={() => setAppView('site')}>MAS →</button>
+              <button type="button" className="is-primary" onClick={() => setAppView('site')}>SED →</button>
             )}
           </div>
         </aside>

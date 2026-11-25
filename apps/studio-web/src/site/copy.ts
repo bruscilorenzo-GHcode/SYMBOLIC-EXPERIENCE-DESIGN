@@ -8,14 +8,14 @@ export const SITE_COPY = {
       score: 'Spatial Score',
       environments: 'Ambienti',
       healing: 'Healing Room',
-      metaplace: 'Metaplace',
+      metaplace: 'Desire',
       studio: 'Studio',
       openStudio: 'Apri lo studio',
       menu: 'Apri menu',
       closeMenu: 'Chiudi menu',
     },
     hero: {
-      eyebrow: 'MED.IA Architecture Studio · Spazio immersivo sperimentale · Mediterraneo',
+      eyebrow: 'Symbolic Experience Design · Spazio immersivo sperimentale · Mediterraneo',
       title: ['Lo Spazio ', 'Immersivo Sperimentale', ' Esplorato'],
       translation: 'Mediated space specifies itself. Playable space is immediate.',
       intro:
@@ -23,14 +23,33 @@ export const SITE_COPY = {
       primary: 'Componi un primo ascolto',
       secondary: 'Scopri il metodo',
       forWhom: 'Per architetti · designer · developer · musicisti',
-      footnote: ['Architecture · Landscape · Sound · Intelligence', 'Roma · Mediterraneo · 2026'],
+      footnote: ['Architecture · Landscape · Sound · Intelligence', 'a sensorial renaissance · 2026'],
       live: 'SPAZIO ATTIVO',
       field: 'LISTENING FIELD',
     },
     manifesto: {
-      index: ['MAS / 001', 'Una pratica tra discipline'],
-      text: 'Lo spazio immersivo sperimentale si esplora attraverso e con una partitura viva. Una scrittura in cui persone appartenenti a domini simbolici diversi — architetto e committente, musicista e ingegnere, giardiniere e macchina — comunicano all’istante. È qui che avviene la traduzione: dentro la partitura, non tra le discipline.',
-      italic: ' La tecnologia è l’infrastruttura di questo scambio e quindi dell’apprendimento che lo spazio genera. Uno spazio che impara è uno spazio che insegna; uno spazio che insegna cresce, e vale la pena abitarlo.',
+      index: ['SED / 001', 'Una pratica tra discipline'],
+      lead: 'Lo spazio si esplora con una partitura viva.',
+      paragraphs: [
+        'Una scrittura in cui domini simbolici diversi comunicano all’istante: architetto e committente, musicista e ingegnere, giardiniere e macchina.',
+        'La traduzione avviene dentro la partitura, non tra le discipline.',
+        'La tecnologia è l’infrastruttura di questo scambio. Uno spazio che impara insegna; uno spazio che insegna cresce, e vale la pena abitarlo.',
+      ],
+      rootsLabel: 'Da dove veniamo',
+      roots: [
+        {
+          name: 'Sonic Gardens',
+          body: 'Giardini sonori in habitat naturali: il suono segue vento, umidità e pioggia, e intensifica la presenza della natura.',
+          href: 'https://www.giardinosonoro.com',
+          link: 'giardinosonoro.com',
+        },
+        {
+          name: 'Sound Modules',
+          body: 'Altoparlanti scolpiti in marmo e terracotta: mediatori fisici tra musica e spazio, mai un solo punto d’ascolto.',
+          href: 'https://www.musstdesign.com/experience-design/sound-modules',
+          link: 'musstdesign.com',
+        },
+      ],
       aside:
         'Integriamo le competenze di architetti, designer e developer. Non le sostituiamo: le mettiamo in partitura.',
     },
@@ -152,18 +171,11 @@ export const SITE_COPY = {
       note: 'Motore deterministico: stessi dati, stesso doppelgänger.',
     },
     system: {
-      eyebrow: 'Il sistema · MAS → Healing Room → Metaplace',
-      title: ['Un sistema, tre luoghi,', 'un solo percorso'],
+      eyebrow: 'Il sistema · SED → Healing · Desire',
+      title: ['Un’unica app, due sezioni,', 'un solo percorso'],
       intro:
         'Lo spazio mediato si espande in due luoghi che ne portano più lontano la grammatica: la Healing Room, dove la stanza osserva chi la abita e lo accompagna dalla diagnostica alla cura, e il Metaplace, dove la cura si rovescia in potenziamento e ogni sessione lascia una traccia. In tutti e tre il percorso resta lo stesso, perché si disegna lo spazio, si scelgono i moduli sonori, si caratterizzano oggetti, luce e suono, si attraversa la sessione e infine si compongono i piani di Improvement.',
       places: [
-        {
-          name: 'MAS',
-          role: 'Lo spazio mediato',
-          credit: 'MED.IA Architecture Studio · MUSI-CO',
-          body: 'Architettura, paesaggio e suono scritti nella stessa partitura, in cui architetto e committente, musicista e ingegnere si capiscono senza tradursi a vicenda.',
-          cta: 'Componi nello Spatial Score',
-        },
         {
           name: 'Healing Room',
           role: 'La stanza che osserva',
@@ -172,7 +184,7 @@ export const SITE_COPY = {
           cta: 'Progetta la Healing Room',
         },
         {
-          name: 'Metaplace',
+          name: 'Desire · Metaplace',
           role: 'Il luogo in cui diventare di più',
           credit: 'Concept e design DNA Lorenzo Brusci',
           body: 'Club immersivo, rehab fisica e spirituale, atelier e teatro intimo aperti 24/7: si esprime un Performing Wish e il luogo compone un piano di Improvement con assistenti che emergono dal percorso.',
@@ -193,12 +205,12 @@ export const SITE_COPY = {
       ],
     },
     studio: {
-      eyebrow: 'MED.IA Architecture Studio',
+      eyebrow: 'Symbolic Experience Design',
       location: 'Roma · Mediterraneo',
       kicker: 'Per architetti, designer e developer',
       title: ['Progettiamo con voi', 'Non al posto vostro'],
       body:
-        'MAS mette in partitura architettura, paesaggio, composizione musicale, acustica e specifica tecnica. Il programma dell’architetto è la prima partitura; il brief del committente è la conversazione che la accende. Portate i vostri disegni, i vostri requisiti, il vostro suono e il vostro codice: integriamo le vostre competenze, non le sostituiamo.',
+        'SED mette in partitura architettura, paesaggio, composizione musicale, acustica e specifica tecnica. Il programma dell’architetto è la prima partitura; il brief del committente è la conversazione che la accende. Portate i vostri disegni, i vostri requisiti, il vostro suono e il vostro codice: integriamo le vostre competenze, non le sostituiamo.',
       process: ['Leggere il programma', 'Tradurre nella partitura', 'Comporre spazio e suono', 'Specificare', 'Costruire insieme'],
       audiences: [
         { title: 'Architetti', body: 'Il vostro programma è la prima partitura. Aggiungiamo la dimensione sonora e immersiva senza toccare l’autorialità del progetto.' },
@@ -214,7 +226,7 @@ export const SITE_COPY = {
       brief: 'Inizia una conversazione',
       back: 'Torna alla spatial score',
     },
-    footer: 'MED.IA Architecture Studio · AURA-SPEC engine',
+    footer: 'Symbolic Experience Design · AURA-SPEC engine',
     partners: 'Contesto e partner principali',
     language: 'English',
   },
@@ -225,14 +237,14 @@ export const SITE_COPY = {
       score: 'Spatial Score',
       environments: 'Environments',
       healing: 'Healing Room',
-      metaplace: 'Metaplace',
+      metaplace: 'Desire',
       studio: 'Studio',
       openStudio: 'Open the studio',
       menu: 'Open menu',
       closeMenu: 'Close menu',
     },
     hero: {
-      eyebrow: 'MED.IA Architecture Studio · Experimental immersive space · Mediterranean',
+      eyebrow: 'Symbolic Experience Design · Experimental immersive space · Mediterranean',
       title: ['The ', 'Experimental Immersive Space', ' Explored'],
       translation: 'Lo spazio mediato si specifica. Lo spazio giocabile è immediato.',
       intro:
@@ -245,9 +257,28 @@ export const SITE_COPY = {
       field: 'LISTENING FIELD',
     },
     manifesto: {
-      index: ['MAS / 001', 'A practice across disciplines'],
-      text: 'The experimental immersive space is explored through and with a living score. A writing in which people from different symbolic domains—architect and client, musician and engineer, gardener and machine—communicate instantly. This is where translation happens: inside the score, not between disciplines.',
-      italic: ' Technology is the infrastructure of that exchange, and therefore of the learning the space generates. A space that learns is a space that teaches; a space that teaches grows, and is worth inhabiting.',
+      index: ['SED / 001', 'A practice across disciplines'],
+      lead: 'Space is explored with a living score.',
+      paragraphs: [
+        'A writing in which different symbolic domains communicate instantly: architect and client, musician and engineer, gardener and machine.',
+        'Translation happens inside the score, not between disciplines.',
+        'Technology is the infrastructure of that exchange. A space that learns teaches; a space that teaches grows, and is worth inhabiting.',
+      ],
+      rootsLabel: 'Where we come from',
+      roots: [
+        {
+          name: 'Sonic Gardens',
+          body: 'Sound gardens in natural habitats: sound follows wind, humidity and rain, and intensifies the presence of nature.',
+          href: 'https://www.giardinosonoro.com',
+          link: 'giardinosonoro.com',
+        },
+        {
+          name: 'Sound Modules',
+          body: 'Speakers carved in marble and terracotta: physical mediators between music and space, never a single listening stage.',
+          href: 'https://www.musstdesign.com/experience-design/sound-modules',
+          link: 'musstdesign.com',
+        },
+      ],
       aside: 'We integrate the skills of architects, designers and developers. We do not replace them: we bring them into the score.',
     },
     method: {
@@ -368,18 +399,11 @@ export const SITE_COPY = {
       note: 'Deterministic engine: same data, same doppelgänger.',
     },
     system: {
-      eyebrow: 'The system · MAS → Healing Room → Metaplace',
-      title: ['One system, three places,', 'one path'],
+      eyebrow: 'The system · SED → Healing · Desire',
+      title: ['One app, two sections,', 'one path'],
       intro:
         'The mediated space expands into two places that carry its grammar further: the Healing Room, where the room observes whoever inhabits it and accompanies them from diagnostics to care, and the Metaplace, where care turns into augmentation and every session leaves a trace. The path stays the same in all three, because you draw the space, choose the sound modules, characterise objects, light and sound, walk through the session and finally compose the Improvement plans.',
       places: [
-        {
-          name: 'MAS',
-          role: 'The mediated space',
-          credit: 'MED.IA Architecture Studio · MUSI-CO',
-          body: 'Architecture, landscape and sound written in the same score, where architect and client, musician and engineer understand one another without translating.',
-          cta: 'Compose in the Spatial Score',
-        },
         {
           name: 'Healing Room',
           role: 'The room that observes',
@@ -388,7 +412,7 @@ export const SITE_COPY = {
           cta: 'Design the Healing Room',
         },
         {
-          name: 'Metaplace',
+          name: 'Desire · Metaplace',
           role: 'The place to become more',
           credit: 'Concept and design DNA Lorenzo Brusci',
           body: 'Immersive club, physical and spiritual rehab, atelier and intimate theatre open 24/7: you express a Performing Wish and the place composes an Improvement plan with assistants that emerge along the way.',
@@ -409,12 +433,12 @@ export const SITE_COPY = {
       ],
     },
     studio: {
-      eyebrow: 'MED.IA Architecture Studio',
+      eyebrow: 'Symbolic Experience Design',
       location: 'Rome · Mediterranean',
       kicker: 'For architects, designers and developers',
       title: ['We design with you', 'Not instead of you'],
       body:
-        'MAS brings architecture, landscape, musical composition, acoustics and technical specification into one score. The architect’s program is the first score; the client’s brief is the conversation that sets it in motion. Bring your drawings, your requirements, your sound and your code: we integrate your skills, we do not replace them.',
+        'SED brings architecture, landscape, musical composition, acoustics and technical specification into one score. The architect’s program is the first score; the client’s brief is the conversation that sets it in motion. Bring your drawings, your requirements, your sound and your code: we integrate your skills, we do not replace them.',
       process: ['Read the program', 'Translate in the score', 'Compose space and sound', 'Specify', 'Build together'],
       audiences: [
         { title: 'Architects', body: 'Your program is the first score. We add the sonic and immersive dimension without taking authorship away from the project.' },
@@ -430,7 +454,7 @@ export const SITE_COPY = {
       brief: 'Start a conversation',
       back: 'Back to the spatial score',
     },
-    footer: 'MED.IA Architecture Studio · AURA-SPEC engine',
+    footer: 'Symbolic Experience Design · AURA-SPEC engine',
     partners: 'Background and main partners',
     language: 'Italiano',
   },

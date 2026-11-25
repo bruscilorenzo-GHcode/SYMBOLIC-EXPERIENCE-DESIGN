@@ -76,10 +76,10 @@ export function SiteView() {
     <div className="site-shell" lang={lang}>
       <header className="site-header">
         <a className="site-brand" href="#top" onClick={() => setMenuOpen(false)}>
-          <span className="site-brand-mark">M</span>
+          <span className="site-brand-mark">S</span>
           <span className="site-brand-type">
-            <strong>MAS</strong>
-            <small>MED.IA Architecture Studio</small>
+            <strong>SED</strong>
+            <small>Symbolic Experience Design · a sensorial renaissance</small>
           </span>
         </a>
         <nav className="site-nav" aria-label="Navigation">
@@ -203,10 +203,22 @@ export function SiteView() {
             <span>{copy.manifesto.index[0]}</span>
             <span>{copy.manifesto.index[1]}</span>
           </div>
-          <p>
-            {copy.manifesto.text}
-            <em>{copy.manifesto.italic}</em>
-          </p>
+          <div className="site-manifesto-body">
+            <p className="site-manifesto-lead">{copy.manifesto.lead}</p>
+            {copy.manifesto.paragraphs.map((line) => (
+              <p key={line} className="site-manifesto-line">{line}</p>
+            ))}
+            <div className="site-manifesto-roots">
+              <span>{copy.manifesto.rootsLabel}</span>
+              {copy.manifesto.roots.map((root) => (
+                <a key={root.name} href={root.href} target="_blank" rel="noreferrer">
+                  <strong>{root.name}</strong>
+                  <em>{root.body}</em>
+                  <small>{root.link} ↗</small>
+                </a>
+              ))}
+            </div>
+          </div>
           <div className="site-manifesto-aside">
             <p>{copy.manifesto.aside}</p>
             <span className="site-sound-rule" aria-hidden="true">
@@ -249,7 +261,7 @@ export function SiteView() {
                 })}
                 <text x="310" y="300" textAnchor="middle" fontSize="10" fontFamily="IBM Plex Mono, monospace" fill="currentColor" letterSpacing="2">{copy.hero.field}</text>
                 <text x="310" y="318" textAnchor="middle" fontSize="8" fontFamily="IBM Plex Mono, monospace" fill="currentColor" opacity=".72">XYZ / 0.00 · 1.20 · 0.00</text>
-                <text x="58" y="560" fontSize="9" fontFamily="IBM Plex Mono, monospace" fill="currentColor" opacity=".65">{copy.method.caption[0]} / MAS</text>
+                <text x="58" y="560" fontSize="9" fontFamily="IBM Plex Mono, monospace" fill="currentColor" opacity=".65">{copy.method.caption[0]} / SED</text>
                 <text x="562" y="560" textAnchor="end" fontSize="9" fontFamily="IBM Plex Mono, monospace" fill="currentColor" opacity=".65">02 — {copy.method.steps[1]!.title.toUpperCase()}</text>
               </svg>
               <span className="site-method-caption">
@@ -333,10 +345,9 @@ export function SiteView() {
           </div>
           <div className="site-system-places">
             {copy.system.places.map((place, index) => (
-              <article key={place.name} className={`site-place site-place--${index === 0 ? 'mas' : index === 1 ? 'healing' : 'metaplace'}`}>
+              <article key={place.name} className={`site-place site-place--${index === 0 ? 'healing' : 'metaplace'}`}>
                 <div className="site-place-visual" aria-hidden="true">
-                  {index === 0 ? <span className="site-place-mas" /> : null}
-                  {index === 1 ? (
+                  {index === 0 ? (
                     <svg viewBox="-16 -16 32 32">
                       <rect x={-13.5} y={-13.5} width={27} height={27} fill="#fcf0cd" stroke="#111" strokeWidth={0.9} />
                       <rect x={-3.3} y={-15.6} width={6.6} height={2.1} fill="#6cb34f" stroke="#111" strokeWidth={0.5} />
@@ -351,7 +362,7 @@ export function SiteView() {
                       <rect x={-6} y={9.6} width={12} height={3.9} fill="#eaa3bd" stroke="#111" strokeWidth={0.6} />
                     </svg>
                   ) : null}
-                  {index === 2 ? <span className="site-place-meta" /> : null}
+                  {index === 1 ? <span className="site-place-meta" /> : null}
                 </div>
                 <p className="site-eyebrow">{String(index + 1).padStart(2, '0')} · {place.role}</p>
                 <h3>{place.name}</h3>
@@ -361,8 +372,7 @@ export function SiteView() {
                   type="button"
                   className="site-place-cta"
                   onClick={() => {
-                    if (index === 0) goScore()
-                    else if (index === 1) {
+                    if (index === 0) {
                       useRoomDesign.getState().setStep(1)
                       openHealing()
                     } else setAppView('metaplace')
@@ -488,9 +498,9 @@ export function SiteView() {
       </section>
 
       <footer className="site-footer">
-        <span className="site-brand-mark">M</span>
+        <span className="site-brand-mark">S</span>
         <span>{copy.footer}</span>
-        <span>© 2026 MAS</span>
+        <span>© 2026 SED</span>
       </footer>
 
       {briefOpen ? (

@@ -106,10 +106,10 @@ export function PlaySeedDialog({ composition, progression, objectMode, lang = 'i
   const configuredMailto = import.meta.env.VITE_MAS_REQUEST_MAILTO
 
   return (
-    <div className="seed-dialog" role="dialog" aria-modal="true" aria-label={t('Seme spaziale e richiesta MAS', 'Spatial seed and MAS request')}>
+    <div className="seed-dialog" role="dialog" aria-modal="true" aria-label={t('Seme spaziale e richiesta SED', 'Spatial seed and SED request')}>
       <div className="seed-shell" ref={shellRef}>
         <header>
-          <span className="seed-eyebrow">MED.IA ARCHITECTURE STUDIO</span>
+          <span className="seed-eyebrow">SYMBOLIC EXPERIENCE DESIGN</span>
           <h2>{seed.title}</h2>
           <p className="seed-narrative">{seed.narrative}</p>
         </header>
@@ -138,7 +138,7 @@ export function PlaySeedDialog({ composition, progression, objectMode, lang = 'i
         <section className="seed-form">
           <h3>{t('Porta questo spazio alla vita', 'Bring this space to life')}</h3>
           <p className="seed-lede">
-            {t('MAS legge il tuo seme come un punto di partenza, non come una specifica chiusa.', 'MAS reads your seed as a starting point, not a closed specification.')}
+            {t('SED legge il tuo seme come un punto di partenza, non come una specifica chiusa.', 'SED reads your seed as a starting point, not a closed specification.')}
           </p>
           <div className="field-grid">
             <label>
@@ -195,7 +195,7 @@ export function PlaySeedDialog({ composition, progression, objectMode, lang = 'i
             <button type="button" onClick={downloadBrief}>{t('Scarica richiesta', 'Download request')}</button>
             <button type="button" onClick={() => void copyBrief()}>{t('Copia', 'Copy')}</button>
             {configuredMailto ? (
-              <a className="seed-send" href={mailto}>{t('Invia a MAS', 'Send to MAS')}</a>
+              <a className="seed-send" href={mailto}>{t('Invia a SED', 'Send to SED')}</a>
             ) : (
               <span className="seed-pending">{t('Invio diretto in arrivo · usa stampa, copia o download', 'Direct sending coming soon · use print, copy or download')}</span>
             )}

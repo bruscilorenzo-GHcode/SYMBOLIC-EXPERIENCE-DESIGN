@@ -23,7 +23,7 @@ export function parseRoute(pathname: string): AppRoute {
         ? 'spec'
         : head === 'healing' || head === 'healing-room'
           ? 'healing'
-          : head === 'metaplace'
+          : head === 'metaplace' || head === 'desire'
             ? 'metaplace'
             : 'site'
   return { lang, view }

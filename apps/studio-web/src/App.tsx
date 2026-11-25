@@ -40,15 +40,15 @@ export function App() {
     document.title =
       appView === 'healing'
         ? lang === 'en'
-          ? 'Healing Room · Lorenzo Brusci & Greg Wilk · MED.IA Architecture Studio'
-          : 'Healing Room · Lorenzo Brusci e Greg Wilk · MED.IA Architecture Studio'
+          ? 'Healing · Lorenzo Brusci & Greg Wilk · Symbolic Experience Design'
+          : 'Healing · Lorenzo Brusci e Greg Wilk · Symbolic Experience Design'
         : appView === 'metaplace'
           ? lang === 'en'
-            ? 'Metaplace · Improvement plans · Lorenzo Brusci · MUSI-CO'
-            : 'Metaplace · Piani di Improvement · Lorenzo Brusci · MUSI-CO'
+            ? 'Desire · Metaplace · Improvement plans · Lorenzo Brusci · MUSI-CO'
+            : 'Desire · Metaplace · Piani di Improvement · Lorenzo Brusci · MUSI-CO'
           : lang === 'en'
-            ? 'MED.IA Architecture Studio · The Experimental Immersive Space'
-            : 'MED.IA Architecture Studio · Lo Spazio Immersivo Sperimentale'
+            ? 'Symbolic Experience Design · a sensorial renaissance'
+            : 'Symbolic Experience Design · a sensorial renaissance'
     const description = document.querySelector('meta[name="description"]')
     if (description) {
       description.setAttribute(

@@ -152,12 +152,12 @@ export function StudioView() {
     <div className="studio-shell" lang={lang}>
       <header className="studio-topbar">
         <button type="button" className="studio-back" onClick={() => setAppView('site')}>
-          {t('← Sito MAS', '← MAS site')}
+          {t('← Sito SED', '← SED site')}
         </button>
         <div className="studio-brand">
           <span className="studio-brand-mark">M</span>
           <div>
-            <strong>MAS</strong>
+            <strong>SED</strong>
             <small>{t('Studio Inhabiting', 'Inhabiting Studio')}</small>
           </div>
         </div>

@@ -6,8 +6,8 @@ import './system.css'
 export type Place = 'mas' | 'healing' | 'metaplace'
 
 /**
- * The MUSI-CO cross-ontological bar: one system, three places, one path.
- * MAS (the mediated space) opens onto the Healing Room (Brusci & Wilk),
+ * The MUSI-CO cross-ontological bar: one app, two sections, one path.
+ * SED (Symbolic Experience Design) holds two sections: Healing (Brusci & Wilk),
  * which opens onto the Metaplace (Brusci). The path runs across them:
  * space → sound modules → character → session → improvement.
  */
@@ -20,9 +20,9 @@ export function SystemBar({ place, actions }: { place: Place; actions?: ReactNod
   const t = (it: string, en: string): string => (lang === 'it' ? it : en)
 
   const places: Array<{ id: Place; name: string; sub: string; go: () => void }> = [
-    { id: 'mas', name: 'MAS', sub: t('Spazio mediato', 'Mediated space'), go: () => setAppView('site') },
+    { id: 'mas', name: 'SED', sub: 'a sensorial renaissance', go: () => setAppView('site') },
     { id: 'healing', name: 'Healing Room', sub: 'Brusci · Wilk', go: () => setAppView('healing') },
-    { id: 'metaplace', name: 'Metaplace', sub: 'Brusci', go: () => setAppView('metaplace') },
+    { id: 'metaplace', name: 'Desire', sub: 'Metaplace · Brusci', go: () => setAppView('metaplace') },
   ]
 
   const goStep = (value: RoomStep | 5): void => {
@@ -39,10 +39,10 @@ export function SystemBar({ place, actions }: { place: Place; actions?: ReactNod
   return (
     <header className={`sys-bar sys-bar--${place}`}>
       <div className="sys-bar-row">
-        <button type="button" className="sys-mark" onClick={() => setAppView('site')} aria-label="MED.IA Architecture Studio">
-          <span className="sys-mark-box">M</span>
+        <button type="button" className="sys-mark" onClick={() => setAppView('site')} aria-label="Symbolic Experience Design">
+          <span className="sys-mark-box">S</span>
           <span className="sys-mark-text">
-            <strong>MED.IA</strong>
+            <strong>SED</strong>
             <small>MUSI-CO</small>
           </span>
         </button>

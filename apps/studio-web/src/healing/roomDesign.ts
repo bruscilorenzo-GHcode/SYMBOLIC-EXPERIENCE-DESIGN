@@ -302,7 +302,7 @@ export function roomBrief(design: RoomDesign, lang: 'it' | 'en'): string {
     lang === 'it'
       ? [
           'HEALING ROOM — scheda di progetto',
-          'Design: Lorenzo Brusci, Greg Wilk (architetto) · MUSI-CO / MED.IA Architecture Studio',
+          'Design: Lorenzo Brusci, Greg Wilk (architetto) · MUSI-CO / Symbolic Experience Design',
           '',
           `01 Spazio: ${t(plan.label)} — ${t(plan.author)}`,
           `02 Moduli sonori: ${modules.join(', ') || '—'} (${roomChannels(design)} canali)`,
@@ -314,7 +314,7 @@ export function roomBrief(design: RoomDesign, lang: 'it' | 'en'): string {
         ]
       : [
           'HEALING ROOM — design sheet',
-          'Design: Lorenzo Brusci, Greg Wilk (architect) · MUSI-CO / MED.IA Architecture Studio',
+          'Design: Lorenzo Brusci, Greg Wilk (architect) · MUSI-CO / Symbolic Experience Design',
           '',
           `01 Space: ${t(plan.label)} — ${t(plan.author)}`,
           `02 Sound modules: ${modules.join(', ') || '—'} (${roomChannels(design)} channels)`,

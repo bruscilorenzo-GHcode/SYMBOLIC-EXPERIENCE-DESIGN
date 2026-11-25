@@ -99,7 +99,7 @@ export function SpecLabView() {
         <div className="spec-brand">
           <span className="spec-brand-mark">M</span>
           <div>
-            <strong>MAS</strong>
+            <strong>SED</strong>
             <small>{t('Laboratorio acustico', 'Acoustic Spec Lab')}</small>
           </div>
         </div>
@@ -131,7 +131,7 @@ export function SpecLabView() {
             <button type="button" aria-pressed={lang === 'it'} className={lang === 'it' ? 'is-active' : ''} onClick={() => setLang('it')}>IT</button>
             <button type="button" aria-pressed={lang === 'en'} className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>EN</button>
           </div>
-          <button type="button" className="spec-site-link" onClick={() => setAppView('site')}>{t('Sito MAS', 'MAS site')} ↗</button>
+          <button type="button" className="spec-site-link" onClick={() => setAppView('site')}>{t('Sito SED', 'SED site')} ↗</button>
           <button type="button" className="spec-return" onClick={() => setAppView('play')}>{t('Torna allo Studio', 'Return to Studio')}</button>
         </div>
       </header>
