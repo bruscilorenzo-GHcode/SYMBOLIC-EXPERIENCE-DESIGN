@@ -13,6 +13,7 @@ import { SpecLabView } from './spec/SpecLabView'
 import { SiteView } from './site/SiteView'
 import { StudioView } from './play/StudioView'
 import { HealingRoomView } from './healing/HealingRoomView'
+import { MetaplaceView } from './metaplace/MetaplaceView'
 import { useStudioStore } from './state/store'
 import { parseRoute, routePath } from './router'
 
@@ -37,9 +38,17 @@ export function App() {
   useEffect(() => {
     document.documentElement.lang = lang
     document.title =
-      lang === 'en'
-        ? 'MED.IA Architecture Studio · The Experimental Immersive Space'
-        : 'MED.IA Architecture Studio · Lo Spazio Immersivo Sperimentale'
+      appView === 'healing'
+        ? lang === 'en'
+          ? 'Healing Room · Lorenzo Brusci & Greg Wilk · MED.IA Architecture Studio'
+          : 'Healing Room · Lorenzo Brusci e Greg Wilk · MED.IA Architecture Studio'
+        : appView === 'metaplace'
+          ? lang === 'en'
+            ? 'Metaplace · Improvement plans · Lorenzo Brusci · MUSI-CO'
+            : 'Metaplace · Piani di Improvement · Lorenzo Brusci · MUSI-CO'
+          : lang === 'en'
+            ? 'MED.IA Architecture Studio · The Experimental Immersive Space'
+            : 'MED.IA Architecture Studio · Lo Spazio Immersivo Sperimentale'
     const description = document.querySelector('meta[name="description"]')
     if (description) {
       description.setAttribute(
@@ -49,7 +58,7 @@ export function App() {
           : 'Lo spazio immersivo sperimentale, esplorato attraverso e con una partitura viva. Architettura, paesaggio, suono e codice in un unico processo.',
       )
     }
-  }, [lang])
+  }, [lang, appView])
 
   useEffect(() => {
     const path = routePath(lang, appView)
@@ -93,5 +102,6 @@ export function App() {
   if (appView === 'site') return <SiteView />
   if (appView === 'play') return <StudioView />
   if (appView === 'healing') return <HealingRoomView />
+  if (appView === 'metaplace') return <MetaplaceView />
   return <SpecLabView />
 }

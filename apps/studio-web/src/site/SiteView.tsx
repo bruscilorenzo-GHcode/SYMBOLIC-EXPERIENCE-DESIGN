@@ -6,7 +6,7 @@ import {
   getPlayProgression,
 } from '@aura-spec/play-engine'
 import { getHabitatArchetype } from '@aura-spec/inhabiting-model'
-import { HEALING_ZONES } from '@aura-spec/healing-room'
+import { useRoomDesign } from '../healing/roomDesign'
 import { PlayScene } from '../play/scene/PlayScene'
 import { PlaySeedDialog } from '../play/PlaySeedDialog'
 import { useStudioStore } from '../state/store'
@@ -87,7 +87,8 @@ export function SiteView() {
           <a href="#metodo">{copy.nav.method}</a>
           <a href="#score">{copy.nav.score}</a>
           <a href="#ambienti">{copy.nav.environments}</a>
-          <a href="#healing">{copy.nav.healing}</a>
+          <button type="button" className="site-nav-place site-nav-place--healing" onClick={openHealing}>{copy.nav.healing}</button>
+          <button type="button" className="site-nav-place site-nav-place--metaplace" onClick={() => setAppView('metaplace')}>{copy.nav.metaplace}</button>
           <a href="#studio">{copy.nav.studio}</a>
         </nav>
         <div className="site-header-actions">
@@ -112,7 +113,7 @@ export function SiteView() {
 
       {menuOpen ? (
         <div className="site-mobile-menu">
-          {(['manifesto', 'metodo', 'score', 'ambienti', 'healing', 'studio'] as const).map((id) => (
+          {(['manifesto', 'metodo', 'score', 'ambienti', 'sistema', 'studio'] as const).map((id) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
               {id === 'metodo'
                 ? copy.nav.method
@@ -120,8 +121,8 @@ export function SiteView() {
                   ? copy.nav.score
                   : id === 'ambienti'
                     ? copy.nav.environments
-                    : id === 'healing'
-                      ? copy.nav.healing
+                    : id === 'sistema'
+                      ? `${copy.nav.healing} · ${copy.nav.metaplace}`
                       : id === 'studio'
                         ? copy.nav.studio
                         : copy.nav.manifesto}
@@ -319,47 +320,80 @@ export function SiteView() {
           <p className="site-imagery-note">{copy.environments.note}</p>
         </section>
 
-        <section className="site-healing section-pad" id="healing">
+        <section className="site-system section-pad" id="sistema">
           <div className="site-section-heading site-section-heading--row">
             <div>
-              <p className="site-eyebrow">{copy.healing.eyebrow}</p>
+              <p className="site-eyebrow">{copy.system.eyebrow}</p>
               <h2>
-                {copy.healing.title[0]}<br />
-                <em>{copy.healing.title[1]}</em>
+                {copy.system.title[0]}<br />
+                <em>{copy.system.title[1]}</em>
               </h2>
             </div>
-            <p>{copy.healing.intro}</p>
+            <p>{copy.system.intro}</p>
           </div>
-          <ol className="site-healing-process">
-            {copy.healing.process.map((step, index) => (
-              <li key={step}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                {step}
-              </li>
-            ))}
-          </ol>
-          <div className="site-healing-zones">
-            {HEALING_ZONES.map((zone, index) => (
-              <article key={zone.id} className={`site-healing-zone site-healing-zone--${index + 1}`}>
-                <span>H.0{index + 1}</span>
-                <h3>{lang === 'it' ? zone.nameIt : zone.name}</h3>
-                <p>{lang === 'it' ? zone.purposeIt : zone.purpose}</p>
-                {zone.areaSqm !== null ? (
-                  <small>{zone.areaSqm.toLocaleString(lang === 'it' ? 'it-IT' : 'en-GB', { maximumFractionDigits: 2 })} m²</small>
-                ) : (
-                  <small>—</small>
-                )}
+          <div className="site-system-places">
+            {copy.system.places.map((place, index) => (
+              <article key={place.name} className={`site-place site-place--${index === 0 ? 'mas' : index === 1 ? 'healing' : 'metaplace'}`}>
+                <div className="site-place-visual" aria-hidden="true">
+                  {index === 0 ? <span className="site-place-mas" /> : null}
+                  {index === 1 ? (
+                    <svg viewBox="-16 -16 32 32">
+                      <rect x={-13.5} y={-13.5} width={27} height={27} fill="#fcf0cd" stroke="#111" strokeWidth={0.9} />
+                      <rect x={-3.3} y={-15.6} width={6.6} height={2.1} fill="#6cb34f" stroke="#111" strokeWidth={0.5} />
+                      <rect x={-15.6} y={-3.4} width={2.1} height={6.8} fill="#6cb34f" stroke="#111" strokeWidth={0.5} />
+                      <rect x={13.5} y={-3.4} width={2.1} height={6.8} fill="#6cb34f" stroke="#111" strokeWidth={0.5} />
+                      <circle r={9.25} fill="#9a98e0" stroke="#111" strokeWidth={0.8} />
+                      {Array.from({ length: 12 }, (_, i) => {
+                        const a = ((15 + i * 30) * Math.PI) / 180
+                        return <line key={i} x1={4 * Math.cos(a)} y1={4 * Math.sin(a)} x2={9.25 * Math.cos(a)} y2={9.25 * Math.sin(a)} stroke="#111" strokeWidth={0.18} />
+                      })}
+                      <circle r={4} fill="#e8a59c" stroke="#111" strokeWidth={0.6} />
+                      <rect x={-6} y={9.6} width={12} height={3.9} fill="#eaa3bd" stroke="#111" strokeWidth={0.6} />
+                    </svg>
+                  ) : null}
+                  {index === 2 ? <span className="site-place-meta" /> : null}
+                </div>
+                <p className="site-eyebrow">{String(index + 1).padStart(2, '0')} · {place.role}</p>
+                <h3>{place.name}</h3>
+                <p>{place.body}</p>
+                <small>{place.credit}</small>
+                <button
+                  type="button"
+                  className="site-place-cta"
+                  onClick={() => {
+                    if (index === 0) goScore()
+                    else if (index === 1) {
+                      useRoomDesign.getState().setStep(1)
+                      openHealing()
+                    } else setAppView('metaplace')
+                  }}
+                >
+                  {place.cta} <span aria-hidden="true">→</span>
+                </button>
               </article>
             ))}
           </div>
-          <div className="site-healing-actions">
-            <button type="button" className="site-button site-button--dark" onClick={openHealing}>
-              {copy.healing.cta} <span aria-hidden="true">→</span>
-            </button>
-            <p>{copy.healing.doppelganger}</p>
-          </div>
-          <p className="site-healing-modular">{copy.healing.modular}</p>
-          <p className="site-imagery-note">{copy.healing.note}</p>
+          <ol className="site-system-path">
+            {copy.system.path.map((label, index) => (
+              <li key={label}>
+                <button
+                  type="button"
+                  className={index === 4 ? 'is-meta' : ''}
+                  onClick={() => {
+                    if (index === 4) setAppView('metaplace')
+                    else {
+                      useRoomDesign.getState().setStep((index + 1) as 1 | 2 | 3 | 4)
+                      openHealing()
+                    }
+                  }}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{label}</strong>
+                  <small>{copy.system.pathPlace[index]}</small>
+                </button>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section className="site-principles section-pad" id="principi">

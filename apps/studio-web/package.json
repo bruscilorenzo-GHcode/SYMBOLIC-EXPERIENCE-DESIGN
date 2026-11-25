@@ -16,6 +16,7 @@
     "@aura-spec/inhabiting-model": "workspace:*",
     "@aura-spec/design-bridge": "workspace:*",
     "@aura-spec/landscape-culture": "workspace:*",
+    "@aura-spec/metaplace": "workspace:*",
     "@aura-spec/osc-bridge": "workspace:*",
     "@aura-spec/play-engine": "workspace:*",
     "@react-three/drei": "^10.0.0",

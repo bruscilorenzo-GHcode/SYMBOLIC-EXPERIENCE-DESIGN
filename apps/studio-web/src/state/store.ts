@@ -82,7 +82,7 @@ import { environmentFromIntent, sessionFromIntent, sessionFromSoundscapePlan } f
 import type { ImportedDrawing } from '../design/import/types'
 
 export type OscStatus = 'idle' | 'connecting' | 'connected' | 'error'
-export type AppView = 'site' | 'play' | 'spec' | 'healing'
+export type AppView = 'site' | 'play' | 'spec' | 'healing' | 'metaplace'
 export type StudioLang = 'it' | 'en'
 export type DesignView = 'plan' | '3d'
 

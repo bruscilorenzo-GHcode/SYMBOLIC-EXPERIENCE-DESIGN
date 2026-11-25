@@ -22,6 +22,9 @@ export default defineConfig({
       '@aura-spec/healing-room': fileURLToPath(
         new URL('./packages/healing-room/src/index.ts', import.meta.url),
       ),
+      '@aura-spec/metaplace': fileURLToPath(
+        new URL('./packages/metaplace/src/index.ts', import.meta.url),
+      ),
     },
   },
   test: {

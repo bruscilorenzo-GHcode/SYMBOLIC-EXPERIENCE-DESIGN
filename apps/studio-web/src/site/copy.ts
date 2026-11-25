@@ -8,6 +8,7 @@ export const SITE_COPY = {
       score: 'Spatial Score',
       environments: 'Ambienti',
       healing: 'Healing Room',
+      metaplace: 'Metaplace',
       studio: 'Studio',
       openStudio: 'Apri lo studio',
       menu: 'Apri menu',
@@ -150,6 +151,37 @@ export const SITE_COPY = {
       cta: 'Entra nella Healing Room',
       note: 'Motore deterministico: stessi dati, stesso doppelgänger.',
     },
+    system: {
+      eyebrow: 'Il sistema · MAS → Healing Room → Metaplace',
+      title: ['Un sistema, tre luoghi,', 'un solo percorso'],
+      intro:
+        'Lo spazio mediato si espande in due luoghi che ne portano più lontano la grammatica: la Healing Room, dove la stanza osserva chi la abita e lo accompagna dalla diagnostica alla cura, e il Metaplace, dove la cura si rovescia in potenziamento e ogni sessione lascia una traccia. In tutti e tre il percorso resta lo stesso, perché si disegna lo spazio, si scelgono i moduli sonori, si caratterizzano oggetti, luce e suono, si attraversa la sessione e infine si compongono i piani di Improvement.',
+      places: [
+        {
+          name: 'MAS',
+          role: 'Lo spazio mediato',
+          credit: 'MED.IA Architecture Studio · MUSI-CO',
+          body: 'Architettura, paesaggio e suono scritti nella stessa partitura, in cui architetto e committente, musicista e ingegnere si capiscono senza tradursi a vicenda.',
+          cta: 'Componi nello Spatial Score',
+        },
+        {
+          name: 'Healing Room',
+          role: 'La stanza che osserva',
+          credit: 'Design Lorenzo Brusci · Greg Wilk, architetto',
+          body: 'Un anello in un quadrato: vestibolo, stanze diagnostiche e di trattamento, la galleria d’osservazione e, al centro, lo spazio di cura sotto il cielo, dove i dati diventano il Doppelgänger che fa da guida.',
+          cta: 'Progetta la Healing Room',
+        },
+        {
+          name: 'Metaplace',
+          role: 'Il luogo in cui diventare di più',
+          credit: 'Concept e design DNA Lorenzo Brusci',
+          body: 'Club immersivo, rehab fisica e spirituale, atelier e teatro intimo aperti 24/7: si esprime un Performing Wish e il luogo compone un piano di Improvement con assistenti che emergono dal percorso.',
+          cta: 'Componi un piano di Improvement',
+        },
+      ],
+      path: ['Spazio', 'Moduli sonori', 'Caratterizzazione', 'Sessione', 'Piani di Improvement'],
+      pathPlace: ['Healing Room', 'Healing Room', 'Oggetti · luce · suono', 'Rito di passaggio', 'Metaplace'],
+    },
     principles: {
       eyebrow: 'Principi / come lavoriamo',
       title: ['Uno spazio che impara', 'è uno spazio che vale la pena abitare'],
@@ -193,6 +225,7 @@ export const SITE_COPY = {
       score: 'Spatial Score',
       environments: 'Environments',
       healing: 'Healing Room',
+      metaplace: 'Metaplace',
       studio: 'Studio',
       openStudio: 'Open the studio',
       menu: 'Open menu',
@@ -333,6 +366,37 @@ export const SITE_COPY = {
       modular: 'Everything is a module: the structural wall system hosts printouts, light boxes, displays and LED panels; light is composed per zone; sound arrives as shower, shell or field. Objects, light and sound reconfigure without ever rebuilding the room.',
       cta: 'Enter the Healing Room',
       note: 'Deterministic engine: same data, same doppelgänger.',
+    },
+    system: {
+      eyebrow: 'The system · MAS → Healing Room → Metaplace',
+      title: ['One system, three places,', 'one path'],
+      intro:
+        'The mediated space expands into two places that carry its grammar further: the Healing Room, where the room observes whoever inhabits it and accompanies them from diagnostics to care, and the Metaplace, where care turns into augmentation and every session leaves a trace. The path stays the same in all three, because you draw the space, choose the sound modules, characterise objects, light and sound, walk through the session and finally compose the Improvement plans.',
+      places: [
+        {
+          name: 'MAS',
+          role: 'The mediated space',
+          credit: 'MED.IA Architecture Studio · MUSI-CO',
+          body: 'Architecture, landscape and sound written in the same score, where architect and client, musician and engineer understand one another without translating.',
+          cta: 'Compose in the Spatial Score',
+        },
+        {
+          name: 'Healing Room',
+          role: 'The room that observes',
+          credit: 'Design Lorenzo Brusci · Greg Wilk, architect',
+          body: 'A ring in a square: vestibule, diagnostic and treatment rooms, the observation gallery and, at the centre, the healing space under the sky, where data become the Doppelgänger that guides you.',
+          cta: 'Design the Healing Room',
+        },
+        {
+          name: 'Metaplace',
+          role: 'The place to become more',
+          credit: 'Concept and design DNA Lorenzo Brusci',
+          body: 'Immersive club, physical and spiritual rehab, atelier and intimate theatre open 24/7: you express a Performing Wish and the place composes an Improvement plan with assistants that emerge along the way.',
+          cta: 'Compose an Improvement plan',
+        },
+      ],
+      path: ['Space', 'Sound modules', 'Character', 'Session', 'Improvement plans'],
+      pathPlace: ['Healing Room', 'Healing Room', 'Objects · light · sound', 'Rite of passage', 'Metaplace'],
     },
     principles: {
       eyebrow: 'Principles / how we work',

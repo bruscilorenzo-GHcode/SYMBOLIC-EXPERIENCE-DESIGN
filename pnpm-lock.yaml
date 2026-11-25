@@ -47,6 +47,9 @@ importers:
       '@aura-spec/landscape-culture':
         specifier: workspace:*
         version: link:../../packages/landscape-culture
+      '@aura-spec/metaplace':
+        specifier: workspace:*
+        version: link:../../packages/metaplace
       '@aura-spec/osc-bridge':
         specifier: workspace:*
         version: link:../../packages/osc-bridge
@@ -192,6 +195,18 @@ importers:
       '@aura-spec/core-acoustics':
         specifier: workspace:*
         version: link:../core-acoustics
+    devDependencies:
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(postcss@8.5.33)(tsx@4.23.15)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.0
+        version: 3.2.7(@types/node@22.20.5)(tsx@4.23.15)
+
+  packages/metaplace:
     devDependencies:
       tsup:
         specifier: ^8.3.5

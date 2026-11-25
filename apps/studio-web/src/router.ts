@@ -1,5 +1,5 @@
 export type RouteLang = 'it' | 'en'
-export type RouteView = 'site' | 'play' | 'spec' | 'healing'
+export type RouteView = 'site' | 'play' | 'spec' | 'healing' | 'metaplace'
 
 export interface AppRoute {
   lang: RouteLang
@@ -23,7 +23,9 @@ export function parseRoute(pathname: string): AppRoute {
         ? 'spec'
         : head === 'healing' || head === 'healing-room'
           ? 'healing'
-          : 'site'
+          : head === 'metaplace'
+            ? 'metaplace'
+            : 'site'
   return { lang, view }
 }
 
@@ -32,5 +34,6 @@ export function routePath(lang: RouteLang, view: RouteView): string {
   if (view === 'play') return `${prefix}/studio` || '/studio'
   if (view === 'spec') return `${prefix}/spec`
   if (view === 'healing') return `${prefix}/healing`
+  if (view === 'metaplace') return `${prefix}/metaplace`
   return prefix || '/'
 }
