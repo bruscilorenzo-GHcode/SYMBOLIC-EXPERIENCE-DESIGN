@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="pgsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e3e7e0"/>
+      <stop offset="1" stop-color="#d3dacf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#pgsky)"/>
+  <circle cx="800" cy="520" r="360" fill="#efece0" stroke="#5f6a5c" stroke-width="5"/>
+  <circle cx="800" cy="520" r="290" fill="none" stroke="#5f6a5c" stroke-width="3"/>
+  <circle cx="800" cy="520" r="215" fill="none" stroke="#5f6a5c" stroke-width="3"/>
+  <circle cx="800" cy="520" r="140" fill="none" stroke="#5f6a5c" stroke-width="3"/>
+  <circle cx="800" cy="520" r="66" fill="#7fa3b0" stroke="#5f6a5c" stroke-width="3"/>
+  <g opacity="0.9">
+    <path d="M800 160 A 360 360 0 0 1 1112 272 L 962 390 A 215 215 0 0 0 800 305 Z" fill="#7c9a68"/>
+    <path d="M1112 272 A 360 360 0 0 1 1160 520 L 1015 520 A 215 215 0 0 0 985 393 Z" fill="#b1a86e"/>
+    <path d="M1160 520 A 360 360 0 0 1 1040 800 L 950 665 A 215 215 0 0 0 1015 520 Z" fill="#8d8a5a"/>
+    <path d="M1040 800 A 360 360 0 0 1 800 880 L 800 735 A 215 215 0 0 0 905 678 Z" fill="#6c8a76"/>
+    <path d="M800 880 A 360 360 0 0 1 560 780 L 655 652 A 215 215 0 0 0 800 735 Z" fill="#a89e68"/>
+    <path d="M560 780 A 360 360 0 0 1 440 520 L 585 520 A 215 215 0 0 0 655 660 Z" fill="#5e7d63"/>
+    <path d="M440 520 A 360 360 0 0 1 540 280 L 645 395 A 215 215 0 0 0 585 520 Z" fill="#7c9a68"/>
+    <path d="M540 280 A 360 360 0 0 1 800 160 L 800 305 A 215 215 0 0 0 645 395 Z" fill="#b7b077"/>
+  </g>
+  <g stroke="#5f6a5c" stroke-width="3">
+    <line x1="800" y1="160" x2="800" y2="305"/>
+    <line x1="1112" y1="272" x2="962" y2="390"/>
+    <line x1="1160" y1="520" x2="1015" y2="520"/>
+    <line x1="1040" y1="800" x2="950" y2="665"/>
+    <line x1="800" y1="880" x2="800" y2="735"/>
+    <line x1="560" y1="780" x2="655" y2="652"/>
+    <line x1="440" y1="520" x2="585" y2="520"/>
+    <line x1="540" y1="280" x2="645" y2="395"/>
+  </g>
+  <g fill="#4c554a">
+    <circle cx="800" cy="520" r="10"/>
+    <circle cx="800" cy="454" r="5"/><circle cx="866" cy="520" r="5"/><circle cx="800" cy="586" r="5"/><circle cx="734" cy="520" r="5"/>
+  </g>
+  <g stroke="#4c554a" stroke-width="4" fill="none" opacity="0.65">
+    <path d="M240 880 C 340 850 300 790 420 770"/>
+    <path d="M1300 880 C 1240 856 1270 800 1180 786"/>
+  </g>
+</svg>

@@ -236,6 +236,7 @@ export function HealingRoomView() {
           <HealingScene
             layout={healing.layout}
             zone={healing.zone}
+            station={healing.station}
             samples={healing.samples}
             doppelganger={healing.doppelganger}
             goal={healing.goal}

@@ -2024,6 +2024,18 @@
   color: rgba(244, 247, 248, 0.66);
 }
 
+.site-healing-modular {
+  margin: 26px 0 0;
+  max-width: 760px;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: rgba(244, 247, 248, 0.55);
+  border-left: 2px solid var(--site-cyan);
+  padding-left: 16px;
+}
+
 .site-healing .site-imagery-note {
   color: rgba(244, 247, 248, 0.4);
 }

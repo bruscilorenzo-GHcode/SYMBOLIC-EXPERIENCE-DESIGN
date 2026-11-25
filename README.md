@@ -141,6 +141,7 @@ Configuration lives in [`vercel.json`](vercel.json); the build command is `pnpm 
 - [`docs/11-two-tier-architecture.md`](docs/11-two-tier-architecture.md) — Inhabiting Playground ↔ Acoustic Spec Lab: models, state machine, layout.
 - [`docs/12-site-experience.md`](docs/12-site-experience.md) — editorial MAS site structure, 3D hero, Spatial Score, daylight, languages, studio handoff.
 - [`docs/10-gamification.md`](docs/10-gamification.md) — AURA PLAY concept, parameter ontology, missions, scoring, progression, studio integration.
+- [`docs/13-healing-room-design-questions.md`](docs/13-healing-room-design-questions.md) — open design questions (modularity of objects, light, sound) to finalise the Healing Room configuration with Greg Wilk.
 
 ## Design stance
 

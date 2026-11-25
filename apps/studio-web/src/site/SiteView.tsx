@@ -358,6 +358,7 @@ export function SiteView() {
             </button>
             <p>{copy.healing.doppelganger}</p>
           </div>
+          <p className="site-healing-modular">{copy.healing.modular}</p>
           <p className="site-imagery-note">{copy.healing.note}</p>
         </section>
 

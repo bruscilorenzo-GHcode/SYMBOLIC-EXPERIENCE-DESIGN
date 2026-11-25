@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ded6c3"/>
+      <stop offset="0.62" stop-color="#e9e3d2"/>
+      <stop offset="1" stop-color="#f0ead9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <circle cx="1210" cy="205" r="86" fill="#f5efdd" stroke="#b7ad93" stroke-width="2"/>
+  <path d="M0 560 C 260 542 520 574 800 556 C 1080 540 1340 572 1600 552 L 1600 1000 L 0 1000 Z" fill="#c9b98a"/>
+  <path d="M0 640 C 300 620 640 662 940 636 C 1220 614 1420 656 1600 640 L 1600 1000 L 0 1000 Z" fill="#b3a271"/>
+  <path d="M690 700 C 780 688 950 690 1050 704 C 1150 718 1160 742 1040 748 C 900 756 760 748 690 736 Z" fill="#8d7f56"/>
+  <path d="M705 712 C 800 726 960 726 1040 712" fill="none" stroke="#5f543a" stroke-width="4"/>
+  <path d="M760 736 C 820 748 950 748 1000 734" fill="none" stroke="#5f543a" stroke-width="3"/>
+  <g stroke="#6d6340" stroke-width="3" fill="none" opacity="0.75">
+    <path d="M0 610 q 30 -10 60 0"/>
+    <path d="M120 632 q 30 -10 60 0"/>
+    <path d="M300 606 q 30 -10 60 0"/>
+    <path d="M470 640 q 30 -10 60 0"/>
+    <path d="M660 604 q 30 -10 60 0"/>
+    <path d="M840 636 q 30 -10 60 0"/>
+    <path d="M1030 606 q 30 -10 60 0"/>
+    <path d="M1220 634 q 30 -10 60 0"/>
+    <path d="M1420 608 q 30 -10 60 0"/>
+  </g>
+  <g fill="#7a5230" opacity="0.85">
+    <circle cx="240" cy="700" r="7"/><circle cx="330" cy="760" r="5"/><circle cx="470" cy="724" r="6"/>
+    <circle cx="580" cy="796" r="5"/><circle cx="1120" cy="770" r="6"/><circle cx="1260" cy="812" r="5"/>
+    <circle cx="1390" cy="754" r="7"/><circle cx="1500" cy="820" r="5"/><circle cx="180" cy="830" r="6"/>
+    <circle cx="700" cy="850" r="5"/><circle cx="980" cy="872" r="6"/><circle cx="860" cy="912" r="5"/>
+  </g>
+  <g stroke="#4f4630" stroke-width="4" fill="none" opacity="0.8">
+    <path d="M140 1000 C 190 900 150 820 220 760"/>
+    <path d="M420 1000 C 470 910 430 850 500 790"/>
+    <path d="M1240 1000 C 1290 900 1250 840 1330 780"/>
+  </g>
+  <path d="M0 0 L 1600 0 L 1600 1000 L 0 1000 Z" fill="none" stroke="#4a4231" stroke-width="0" />
+</svg>
