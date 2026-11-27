@@ -10,6 +10,7 @@ import {
 import { useStudioStore } from '../state/store'
 import { SystemBar } from '../system/SystemBar'
 import { RoomPlan, type JourneyStage } from './RoomPlan'
+import { RoomStage3D } from './RoomStage3D'
 import { RoomAudition } from './roomAudition'
 import {
   ATMOSPHERES,
@@ -455,6 +456,7 @@ export function HealingRoomView() {
         <main className="hr-stage">
           <div className="hr-stage-bar">
             <div className="hr-seg" role="group" aria-label={tt('Vista', 'View')}>
+              <button type="button" aria-pressed={view === '3d'} onClick={() => setView('3d')}>3D</button>
               <button type="button" aria-pressed={view === 'plan'} onClick={() => setView('plan')}>{tt('Pianta', 'Plan')}</button>
               <button type="button" aria-pressed={view === 'axo'} onClick={() => setView('axo')}>{tt('Assonometria', 'Axonometry')}</button>
             </div>
@@ -462,18 +464,22 @@ export function HealingRoomView() {
               {t(plan.label)} · {t(plan.author)}
             </span>
           </div>
-          <RoomPlan
-            design={design}
-            view={view}
-            step={step}
-            lang={lang}
-            playing={playing}
-            journey={journey}
-            doppelganger={healing.doppelganger}
-            goal={healing.goal}
-            samples={healing.samples.length}
-          />
-          {view === 'plan' ? (
+          {view === '3d' ? (
+            <RoomStage3D design={design} journey={journey} lang={lang} />
+          ) : (
+            <RoomPlan
+              design={design}
+              view={view}
+              step={step}
+              lang={lang}
+              playing={playing}
+              journey={journey}
+              doppelganger={healing.doppelganger}
+              goal={healing.goal}
+              samples={healing.samples.length}
+            />
+          )}
+          {view === '3d' ? null : view === 'plan' ? (
             <ul className="hr-legend">
               {plan.zones.map((zone) => (
                 <li key={zone.id}><i style={{ background: zone.color }} />{t(zone.label)}</li>

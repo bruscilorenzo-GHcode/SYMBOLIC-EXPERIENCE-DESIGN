@@ -16,7 +16,7 @@ export type RoomObjectId = 'arches' | 'garden' | 'water' | 'disc' | 'domes' | 'c
 export type LightSceneId = 'skylight' | 'amber' | 'green' | 'violet' | 'circadian'
 export type AtmosphereId = 'forest' | 'water' | 'breath' | 'twin' | 'silence'
 export type RoomStep = 1 | 2 | 3 | 4
-export type RoomViewMode = 'plan' | 'axo'
+export type RoomViewMode = 'plan' | 'axo' | '3d'
 
 export interface PlanZone {
   id: string
@@ -246,6 +246,8 @@ interface RoomDesignStore {
   setPlan: (plan: RoomPlanId) => void
   toggleModule: (id: SoundModuleId) => void
   toggleObject: (id: RoomObjectId) => void
+  setModules: (ids: SoundModuleId[]) => void
+  setObjects: (ids: RoomObjectId[]) => void
   setLight: (id: LightSceneId) => void
   setLightLevel: (value: number) => void
   setAtmosphere: (id: AtmosphereId) => void
@@ -259,12 +261,14 @@ function toggle<T>(list: T[], item: T): T[] {
 export const useRoomDesign = create<RoomDesignStore>((set) => ({
   design: load(),
   step: 1,
-  view: 'axo',
+  view: '3d',
   setStep: (step) => set({ step }),
   setView: (view) => set({ view }),
   setPlan: (plan) => set((s) => ({ design: { ...s.design, plan } })),
   toggleModule: (id) => set((s) => ({ design: { ...s.design, modules: toggle(s.design.modules, id) } })),
   toggleObject: (id) => set((s) => ({ design: { ...s.design, objects: toggle(s.design.objects, id) } })),
+  setModules: (modules) => set((s) => ({ design: { ...s.design, modules } })),
+  setObjects: (objects) => set((s) => ({ design: { ...s.design, objects } })),
   setLight: (light) => set((s) => ({ design: { ...s.design, light } })),
   setLightLevel: (lightLevel) => set((s) => ({ design: { ...s.design, lightLevel } })),
   setAtmosphere: (atmosphere) => set((s) => ({ design: { ...s.design, atmosphere } })),

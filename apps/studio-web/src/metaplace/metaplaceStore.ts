@@ -10,7 +10,7 @@ import {
   type Trace,
 } from '@aura-spec/metaplace'
 
-export type MetaStep = 'wish' | 'modulate' | 'plan' | 'traces'
+export type MetaStep = 'wish' | 'modulate' | 'agents' | 'plan' | 'traces'
 
 interface MetaplaceState {
   step: MetaStep

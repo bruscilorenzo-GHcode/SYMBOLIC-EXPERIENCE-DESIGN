@@ -34,3 +34,8 @@ Source: `METAPLACE copy.pdf` (deck branded RELBEING) and `METAPLACE_session/META
 |---|---|---|
 | Healing Room | `/healing` | `/en/healing` |
 | Metaplace | `/metaplace` | `/en/metaplace` |
+
+## Composing the experience (2026-11)
+
+- **Healing Room — 3D stage.** The configurator opens on an explorable 3D room (`RoomStage3D`): orbit by dragging, zoom with the wheel/pinch or the +/− controls, and switch between *Overview*, *Inside* and *Focus*. Objects, sound modules and light scenes from the configurator appear live: timber arches, living garden, water mirror, central disc, isolation domes, biomorphic capsules, display walls, talisman; sound showers, perimeter ring, ambisonic dome, vibroacoustic floor, resonant walls, analogue VR. The journey step pulses the current zone. Plan and axonometry remain available.
+- **Desire — external agents.** A dedicated step shows six real examples of what external agents can do (soundscape composer, voice coach, physical choreographer, essence designer, relational doppelgänger, director). Applying a card writes the Performing Wish, the tradition blend, the plan tier and the actual Healing Room configuration (modules, objects, light); the live state is shown and everything is reversible.
