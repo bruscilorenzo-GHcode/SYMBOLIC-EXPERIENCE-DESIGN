@@ -100,7 +100,10 @@ describe('four generative musical worlds', () => {
 
   it('switches the idiom in the play composition', () => {
     const initial = createInitialPlayProgress()
-    expect(initial.idiomId).toBe('soundscape')
+    // The default world is library-backed (SYNTAGMA cinematic stems), so the
+    // first listen is harmonically authored rather than generative.
+    expect(initial.idiomId).toBe('cinematic')
+    expect(composeFromProgress(initial).music.idiomId).toBe('cinematic')
     const classics = setPlayIdiom(initial, 'classics')
     expect(classics.idiomId).toBe('classics')
     expect(composeFromProgress(classics).music.idiomId).toBe('classics')

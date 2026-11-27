@@ -48,13 +48,17 @@ The same composition can be voiced in four categories, selected in Studio and in
 - **High Pop** — synth and electric guitar over a sub-bass and crowd noise; hook-led melody and backbeat.
 - **Classics** — piano and cello over a string drone and air noise, voiced with the **Maestro** soundfont.
 
-The categories use the **SYNTAGMA audio stack**: AudioWorklet + `spessasynth_lib` + the bundled `default.sf2` SoundFont (Maestro bank for Classics). Soundscape is fully generative; the other genres read the actual MIDI stem libraries:
+The categories use the **SYNTAGMA audio stack**: AudioWorklet + `spessasynth_lib` 4.3.14 (pinned to the bundled `spessasynth_processor.min.js`) + the bundled `default.sf2` SoundFont (Maestro bank for Classics). The **default world is Cinematic**, so the first listen is library-backed; Soundscape remains selectable and is fully generative.
+
+The stem libraries are the **SYNTAGMA `/Styles` catalogue** (byte-identical files), expanded to indices 001–096:
 
 - `HighPop-Long` → Drums / Bass / Pad / Lead
-- `Cinematic` → Drums / Bass / Pad / Lead
-- `Classic-Long` (Maestro) → Cello Bass / Viola Pad / Violin Lead
+- `Cinematic` → Drums / Bass / Pad / Lead (A/B sections)
+- `Classics` (Maestro) → Cello Bass / Viola Pad / Violin Lead (Classical-Long, same piece per index)
 
-Each part has a shuffled, non-repeating queue with unseen 2-bar windows and two-stem prefetch. Patterns swap at every 2-bar boundary; live `P1…P4` readouts show the current source and window. Genre changes set the tempo hint (112 / 100 / 108 BPM) and are capped at 120 BPM. Human parameters gate density, transpose pitch, set velocity, reverb and brightness, and add granular retriggers. Idiom or radical parameter changes use a 0.15 s gain crossfade; habitat changes lerp background/fog/sky/light colours over 0.6 s.
+**Harmonic consistency.** Files are grouped by their authored song number: all parts of the same index (and A/B variant) are scheduled together on the same 16-beat window, so the harmony comes from one piece instead of unrelated files. A song is held for 3 windows (Cinematic), 6 (High Pop) or 8 (Classics) before the next. Percussion is never transposed; the harmonic group receives one shared transposition (±2 semitones from water/light) so intervals stay intact. Windows are aligned to the same bar position; live `P1…P4` readouts show source, window and song. Human parameters gate density, set velocity, reverb and brightness, and add granular retriggers (octave neighbours only). Idiom or radical parameter changes use a 0.15 s gain crossfade; habitat changes lerp background/fog/sky/light colours over 0.6 s.
+
+**Generative path.** No microtonal pitch bends and no per-note pitch-wheel resets: notes are equal-tempered. On structural beats the melody snaps to the current chord when it sits a semitone away; the drone rotates its voices, rests one cycle in five, and the melody withdraws every sixth phrase, so the field breathes and develops instead of looping.
 
 ## Technical Spec Lab
 

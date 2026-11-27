@@ -1,6 +1,6 @@
 import { WorkletSynthesizer } from 'spessasynth_lib'
 import type { IdiomScore, PlayComposition, SpatialFieldProfile } from '@aura-spec/play-engine'
-import { buildIdiomScore } from '@aura-spec/play-engine'
+import { buildIdiomScore, getIdiom } from '@aura-spec/play-engine'
 import { PlayAudition } from './playAudition'
 import { StemEngine, stemGenreForIdiom, type StemSourceReadout } from './stemEngine'
 import {
@@ -9,6 +9,7 @@ import {
   clampMidi,
   clampVelocity,
 } from './noteScheduler'
+import { pitchClassesFromScale, snapMidiToPitchClasses } from './harmony'
 
 const PROCESSOR_URL = '/sonifier/spessasynth_processor.min.js'
 const SOUNDFONT_URL = '/sonifier/default.sf2'
@@ -351,15 +352,19 @@ export class SyntagmaAudition {
     // pitches sustain through every cycle and the field reads as static.
     const restDrone = this.phraseIndex > 0 && this.phraseIndex % 5 === 4
     const dropDroneIndex = drones.length > 1 ? this.phraseIndex % drones.length : -1
+    // A phrase rest every six cycles: the melody withdraws, the field breathes.
+    const restMelody = this.phraseIndex > 0 && this.phraseIndex % 6 === 5
     for (const event of events) {
       if (event.role === 'drone') {
         if (restDrone) continue
         if (drones.indexOf(event) === dropDroneIndex) continue
       }
+      if (restMelody && (event.role === 'melody' || event.role === 'ornament')) continue
       const channel = event.role === 'percussion' ? 9 : event.role === 'drone' ? 2 : event.role === 'melody' || event.role === 'ornament' ? 1 : 0
-      const note = Math.round(event.midi)
-      const cents = (event.midi - note) * 100
-      this.synth.pitchWheel(channel, Math.round(Math.min(16383, Math.max(0, 8192 + (cents / 200) * 8192))))
+      let note = Math.round(event.midi)
+      if (event.role === 'melody' && beat % 4 === 0) {
+        note = this.snapMelodyToChord(score, beat, note)
+      }
       const spread = this.spatialField === 'omni' ? 1 : this.spatialField === 'line' ? 0.35 : 0.1
       try {
         this.synth.controllerChange(channel, 10, Math.round(64 + Math.max(-1, Math.min(1, event.pan * spread)) * 63))
@@ -419,6 +424,27 @@ export class SyntagmaAudition {
       if (segment <= overlap) break
       offset += segment - overlap
     }
+  }
+
+  /**
+   * On structural beats, pull a melody note that sits a semitone away from the
+   * current chord onto the nearest chord tone. The phrase keeps its contour and
+   * the harmony stops rubbing: no microtonal bends, no accidental clashes.
+   */
+  private snapMelodyToChord(score: IdiomScore, beat: number, midi: number): number {
+    const idiom = getIdiom(score.idiomId)
+    if (idiom.harmony.strategy !== 'functional') return midi
+    const progression = idiom.harmony.progression
+    if (!progression || progression.length === 0) return midi
+    const chord = progression[Math.floor(beat / 4) % progression.length]
+    if (!chord || chord.length === 0) return midi
+    const chordPcs = chord.map((degree) => {
+      const cents = score.scaleCents[degree % score.scaleCents.length] ?? 0
+      return (((score.tonicPc + Math.round(cents / 100)) % 12) + 12) % 12
+    })
+    const scalePcs = pitchClassesFromScale(score.tonicPc, score.scaleCents)
+    const target = chordPcs.length > 0 ? chordPcs : scalePcs
+    return snapMidiToPitchClasses(midi, target, 1)
   }
 
   /** A held pitch is released before re-triggering, so its note-off cannot kill the new note. */

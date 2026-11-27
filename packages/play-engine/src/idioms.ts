@@ -209,7 +209,7 @@ export const IDIOM_DEFINITIONS: MusicalIdiomDefinition[] = [
   },
 ]
 
-export const DEFAULT_IDIOM_ID: MusicalIdiomId = 'soundscape'
+export const DEFAULT_IDIOM_ID: MusicalIdiomId = 'cinematic'
 
 export function getIdiom(id: MusicalIdiomId): MusicalIdiomDefinition {
   return IDIOM_DEFINITIONS.find((idiom) => idiom.id === id) ?? IDIOM_DEFINITIONS[0]!
