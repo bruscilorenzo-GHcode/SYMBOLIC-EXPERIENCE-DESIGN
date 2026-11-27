@@ -3,6 +3,12 @@ import type { IdiomScore, PlayComposition, SpatialFieldProfile } from '@aura-spe
 import { buildIdiomScore } from '@aura-spec/play-engine'
 import { PlayAudition } from './playAudition'
 import { StemEngine, stemGenreForIdiom, type StemSourceReadout } from './stemEngine'
+import {
+  EVENT_MAX_DURATION_MS,
+  HeldNoteRegistry,
+  clampMidi,
+  clampVelocity,
+} from './noteScheduler'
 
 const PROCESSOR_URL = '/sonifier/spessasynth_processor.min.js'
 const SOUNDFONT_URL = '/sonifier/default.sf2'
@@ -41,6 +47,7 @@ export class SyntagmaAudition {
   private master: GainNode | null = null
   private beatTimer: number | null = null
   private noteTimers = new Set<number>()
+  private held = new HeldNoteRegistry()
   private crossfadeTimer: number | null = null
   private playing = false
   private ramping = false
@@ -50,6 +57,7 @@ export class SyntagmaAudition {
   private composition: PlayComposition | null = null
   private fallback: PlayAudition | null = null
   private initPromise: Promise<boolean> | null = null
+  private initReady = false
   private spatialField: SpatialFieldProfile = 'omni'
   private stemEngine: StemEngine | null = null
   private sources: StemSourceReadout[] = []
@@ -60,9 +68,24 @@ export class SyntagmaAudition {
 
   async start(composition: PlayComposition, spatialField: SpatialFieldProfile = 'omni'): Promise<void> {
     this.spatialField = spatialField
-    if (this.playing) {
+    if (this.fallback) {
+      if (this.fallback.isPlaying) this.fallback.update(composition)
+      else await this.fallback.start(composition)
+      this.playing = true
+      return
+    }
+    if (this.playing && this.context && this.context.state === 'running') {
       this.update(composition)
       return
+    }
+    if (this.playing && this.context?.state === 'suspended') {
+      try {
+        await this.context.resume()
+        this.update(composition)
+        return
+      } catch {
+        // Fall through to a clean re-initialisation.
+      }
     }
     this.composition = composition
     const ok = await this.init(composition)
@@ -209,6 +232,13 @@ export class SyntagmaAudition {
     this.crossfadeTimer = null
     for (const timer of this.noteTimers) window.clearTimeout(timer)
     this.noteTimers.clear()
+    for (const { channel, midi } of this.held.releaseAll()) {
+      try {
+        this.synth?.noteOff(channel, midi)
+      } catch {
+        // The voice may already be gone.
+      }
+    }
     const context = this.context
     const synth = this.synth
     const master = this.master
@@ -219,6 +249,8 @@ export class SyntagmaAudition {
     this.context = null
     this.synth = null
     this.master = null
+    this.initPromise = null
+    this.initReady = false
     this.currentScore = null
     this.composition = null
     if (master && context) {
@@ -236,13 +268,28 @@ export class SyntagmaAudition {
   }
 
   private async init(composition: PlayComposition): Promise<boolean> {
+    // A live context is reusable; a stopped engine has none, so re-initialise
+    // instead of trusting a resolved promise from the previous session.
+    if (this.initReady && this.context && this.context.state !== 'closed') {
+      if (this.context.state === 'suspended') {
+        try {
+          await this.context.resume()
+        } catch {
+          // The browser will retry on the next user gesture.
+        }
+      }
+      return true
+    }
     if (this.initPromise) return this.initPromise
     this.initPromise = (async () => {
+      let context: AudioContext | null = null
       try {
-        const context = new AudioContext()
+        context = new AudioContext()
         await context.audioWorklet.addModule(PROCESSOR_URL)
         const synth = new WorkletSynthesizer(context, { eventsEnabled: true })
-        await synth.isReady
+        // A processor/library version mismatch makes isReady wait forever;
+        // time out so the oscillator fallback can take over instead of silence.
+        await withTimeout(synth.isReady, 8000, 'spessasynth isReady')
         const response = await fetch(SOUNDFONT_URL)
         if (!response.ok) throw new Error(`SoundFont HTTP ${response.status}`)
         await synth.soundBankManager.addSoundBank(await response.arrayBuffer(), 'default')
@@ -259,10 +306,18 @@ export class SyntagmaAudition {
         this.context = context
         this.synth = synth
         this.master = master
+        this.initReady = true
         this.currentScore = composition.music.idiomScore
         return true
       } catch (error) {
         console.warn('[SyntagmaAudition] SoundFont unavailable, using oscillator fallback:', error)
+        this.initReady = false
+        this.initPromise = null
+        try {
+          await context?.close()
+        } catch {
+          // The context may already be closed.
+        }
         return false
       }
     })()
@@ -290,7 +345,17 @@ export class SyntagmaAudition {
     const beat = this.beatCounter
     const events = score.events.filter((event) => Math.abs(event.beat - beat) < 0.01)
     const beatMs = 60000 / Math.max(30, score.tempoBpm)
+    const drones = events.filter((event) => event.role === 'drone')
+    // The harmonic bed must breathe: one cycle in five rests, and on the other
+    // cycles one drone voice is dropped in rotation. Without this the two drone
+    // pitches sustain through every cycle and the field reads as static.
+    const restDrone = this.phraseIndex > 0 && this.phraseIndex % 5 === 4
+    const dropDroneIndex = drones.length > 1 ? this.phraseIndex % drones.length : -1
     for (const event of events) {
+      if (event.role === 'drone') {
+        if (restDrone) continue
+        if (drones.indexOf(event) === dropDroneIndex) continue
+      }
       const channel = event.role === 'percussion' ? 9 : event.role === 'drone' ? 2 : event.role === 'melody' || event.role === 'ornament' ? 1 : 0
       const note = Math.round(event.midi)
       const cents = (event.midi - note) * 100
@@ -301,23 +366,24 @@ export class SyntagmaAudition {
       } catch {
         // Pan is optional; the note must still play.
       }
-      const velocity = Math.max(1, Math.min(127, Math.round(event.velocity * 110)))
-      this.synth.noteOn(channel, note, velocity)
+      const velocityScale = event.role === 'drone' ? 0.72 : 1
+      const velocity = clampVelocity(event.velocity * 110 * velocityScale)
+      const cap = EVENT_MAX_DURATION_MS[event.role] ?? 3000
+      if (event.role === 'drone') {
+        this.scheduleDrone(channel, note, velocity, event.durationBeats * beatMs)
+        continue
+      }
+      const generation = this.noteOn(channel, note, velocity)
       if (event.role === 'melody' && this.composition) {
         const granularity = Math.min(0.32, this.composition.parameters.wind * 0.18 + score.tension * 0.14)
         if (Math.random() < granularity) {
           this.scheduleGranule(channel, note + (Math.random() > 0.5 ? 12 : -12), Math.max(1, Math.round(velocity * 0.55)))
         }
       }
-      const timer = window.setTimeout(() => {
-        try {
-          this.synth?.noteOff(channel, note)
-        } catch {
-          // ignore
-        }
-        this.noteTimers.delete(timer)
-      }, Math.max(80, event.durationBeats * beatMs))
-      this.noteTimers.add(timer)
+      if (generation !== null) {
+        const durationMs = Math.max(80, Math.min(event.durationBeats * beatMs, cap))
+        this.scheduleNoteOff(channel, note, durationMs, generation)
+      }
     }
     this.beatCounter += 1
     if (this.beatCounter >= score.cycleBeats) {
@@ -328,26 +394,76 @@ export class SyntagmaAudition {
     }
   }
 
-  private scheduleGranule(channel: number, note: number, velocity: number): void {
+  /**
+   * Keeps the drone alive across a long cycle with soft re-bows every few
+   * seconds instead of one multi-second note that either hangs or is cut,
+   * leaving an audible hole in the field.
+   */
+  private scheduleDrone(channel: number, midi: number, velocity: number, totalMs: number): void {
+    const segment = Math.min(EVENT_MAX_DURATION_MS.drone ?? 6500, totalMs)
+    const overlap = 380
+    let offset = 0
+    let swell = 0
+    while (offset < totalMs) {
+      const duration = Math.min(segment, totalMs - offset)
+      const delay = offset
+      const swellVelocity = clampVelocity(velocity * (swell % 2 === 0 ? 1 : 0.94))
+      swell += 1
+      const timer = window.setTimeout(() => {
+        this.noteTimers.delete(timer)
+        if (!this.playing) return
+        const generation = this.noteOn(channel, midi, swellVelocity)
+        if (generation !== null) this.scheduleNoteOff(channel, midi, duration, generation)
+      }, delay)
+      this.noteTimers.add(timer)
+      if (segment <= overlap) break
+      offset += segment - overlap
+    }
+  }
+
+  /** A held pitch is released before re-triggering, so its note-off cannot kill the new note. */
+  private noteOn(channel: number, note: number, velocity: number): number | null {
     const synth = this.synth
-    if (!synth || !this.context) return
-    const delay = 90 + Math.random() * 160
-    const timer = window.setTimeout(() => {
+    if (!synth) return null
+    const midi = clampMidi(note)
+    if (this.held.isHeld(channel, midi)) {
       try {
-        synth.noteOn(channel, Math.max(0, Math.min(127, note)), velocity)
-        const off = window.setTimeout(() => {
-          try {
-            synth.noteOff(channel, Math.max(0, Math.min(127, note)))
-          } catch {
-            // ignore
-          }
-          this.noteTimers.delete(off)
-        }, 80 + Math.random() * 120)
-        this.noteTimers.add(off)
+        synth.noteOff(channel, midi)
+      } catch {
+        // The voice may already be gone.
+      }
+    }
+    try {
+      synth.noteOn(channel, midi, velocity)
+      return this.held.markOn(channel, midi)
+    } catch {
+      // Never let one lost voice stop the phrase.
+      return null
+    }
+  }
+
+  private scheduleNoteOff(channel: number, midi: number, delayMs: number, generation: number): void {
+    const timer = window.setTimeout(() => {
+      this.noteTimers.delete(timer)
+      if (!this.held.markOff(channel, midi, generation)) return
+      try {
+        this.synth?.noteOff(channel, midi)
       } catch {
         // ignore
       }
+    }, delayMs)
+    this.noteTimers.add(timer)
+  }
+
+  private scheduleGranule(channel: number, note: number, velocity: number): void {
+    if (!this.synth || !this.context) return
+    const delay = 90 + Math.random() * 160
+    const timer = window.setTimeout(() => {
       this.noteTimers.delete(timer)
+      if (!this.playing) return
+      const midi = clampMidi(note)
+      const generation = this.noteOn(channel, midi, velocity)
+      if (generation !== null) this.scheduleNoteOff(channel, midi, 80 + Math.random() * 120, generation)
     }, delay)
     this.noteTimers.add(timer)
   }
@@ -383,4 +499,23 @@ export class SyntagmaAudition {
     master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now)
     master.gain.linearRampToValueAtTime(value, now + seconds)
   }
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = window.setTimeout(
+      () => reject(new Error(`${label} timed out after ${timeoutMs} ms`)),
+      timeoutMs,
+    )
+    promise.then(
+      (value) => {
+        window.clearTimeout(timer)
+        resolve(value)
+      },
+      (error) => {
+        window.clearTimeout(timer)
+        reject(error)
+      },
+    )
+  })
 }
