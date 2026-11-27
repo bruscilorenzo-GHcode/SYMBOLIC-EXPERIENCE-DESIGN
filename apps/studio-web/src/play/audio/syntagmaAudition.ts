@@ -57,6 +57,7 @@ export class SyntagmaAudition {
   private composition: PlayComposition | null = null
   private fallback: PlayAudition | null = null
   private initPromise: Promise<boolean> | null = null
+  private initReady = false
   private spatialField: SpatialFieldProfile = 'omni'
   private stemEngine: StemEngine | null = null
   private sources: StemSourceReadout[] = []
@@ -67,9 +68,24 @@ export class SyntagmaAudition {
 
   async start(composition: PlayComposition, spatialField: SpatialFieldProfile = 'omni'): Promise<void> {
     this.spatialField = spatialField
-    if (this.playing) {
+    if (this.fallback) {
+      if (this.fallback.isPlaying) this.fallback.update(composition)
+      else await this.fallback.start(composition)
+      this.playing = true
+      return
+    }
+    if (this.playing && this.context && this.context.state === 'running') {
       this.update(composition)
       return
+    }
+    if (this.playing && this.context?.state === 'suspended') {
+      try {
+        await this.context.resume()
+        this.update(composition)
+        return
+      } catch {
+        // Fall through to a clean re-initialisation.
+      }
     }
     this.composition = composition
     const ok = await this.init(composition)
@@ -233,6 +249,8 @@ export class SyntagmaAudition {
     this.context = null
     this.synth = null
     this.master = null
+    this.initPromise = null
+    this.initReady = false
     this.currentScore = null
     this.composition = null
     if (master && context) {
@@ -250,6 +268,18 @@ export class SyntagmaAudition {
   }
 
   private async init(composition: PlayComposition): Promise<boolean> {
+    // A live context is reusable; a stopped engine has none, so re-initialise
+    // instead of trusting a resolved promise from the previous session.
+    if (this.initReady && this.context && this.context.state !== 'closed') {
+      if (this.context.state === 'suspended') {
+        try {
+          await this.context.resume()
+        } catch {
+          // The browser will retry on the next user gesture.
+        }
+      }
+      return true
+    }
     if (this.initPromise) return this.initPromise
     this.initPromise = (async () => {
       let context: AudioContext | null = null
@@ -276,10 +306,13 @@ export class SyntagmaAudition {
         this.context = context
         this.synth = synth
         this.master = master
+        this.initReady = true
         this.currentScore = composition.music.idiomScore
         return true
       } catch (error) {
         console.warn('[SyntagmaAudition] SoundFont unavailable, using oscillator fallback:', error)
+        this.initReady = false
+        this.initPromise = null
         try {
           await context?.close()
         } catch {
