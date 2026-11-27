@@ -771,3 +771,74 @@
   color: rgba(11, 20, 24, 0.4);
   font-style: normal;
 }
+
+/* Primary listening control: the mission CTA was redundant, listening is the action */
+.studio-card--listen {
+  border-color: var(--studio-ink);
+}
+
+.studio-listen {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 14px 14px;
+  border: 0;
+  background: var(--studio-ink);
+  color: var(--studio-paper-light);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.studio-listen:hover {
+  background: var(--studio-fern);
+}
+
+.studio-listen-icon {
+  font-size: 15px;
+  line-height: 1;
+  color: var(--studio-amber);
+}
+
+.studio-listen strong {
+  font: 500 12px/1 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.studio-listen small {
+  margin-left: auto;
+  max-width: 46%;
+  font: 400 8px/1.35 'IBM Plex Mono', ui-monospace, monospace;
+  opacity: 0.62;
+  text-align: right;
+}
+
+.studio-listen.is-playing {
+  background: var(--studio-amber);
+  color: var(--studio-ink);
+}
+
+.studio-listen.is-playing .studio-listen-icon {
+  color: var(--studio-ink);
+}
+
+.studio-mission-check {
+  width: 100%;
+  border: 1px solid rgba(11, 20, 24, 0.24);
+  background: transparent;
+  color: rgba(11, 20, 24, 0.7);
+  padding: 8px 10px;
+  font: 500 8px/1 'IBM Plex Mono', ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.studio-mission-check:hover {
+  border-color: var(--studio-ink);
+  color: var(--studio-ink);
+}

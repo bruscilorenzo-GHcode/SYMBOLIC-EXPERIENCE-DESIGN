@@ -363,13 +363,27 @@ export function StudioView() {
                 </span>
               ))}
             </div>
-            <button type="button" className="studio-primary" onClick={verifyMission}>
-              {missionEvaluation.passed ? t('Varca la soglia', 'Cross the threshold') : t('Ascolta la risposta', 'Listen to the response')}
+            <button type="button" className="studio-mission-check" onClick={verifyMission}>
+              {missionEvaluation.passed ? t('Soglia superata — verifica', 'Threshold crossed — check') : t('Verifica obiettivi', 'Check objectives')}
             </button>
           </section>
 
-          <section className="studio-card">
+          <section className="studio-card studio-card--listen">
             <h2>{t('Campo sonoro', 'Sound field')}</h2>
+            <button
+              type="button"
+              className={`studio-listen${auditioning ? ' is-playing' : ''}`}
+              onClick={() => void toggleAudio()}
+              aria-pressed={auditioning}
+            >
+              <span className="studio-listen-icon" aria-hidden="true">{auditioning ? 'Ⅱ' : '▶'}</span>
+              <strong>{auditioning ? t('Silenzia', 'Silence') : t('Ascolta', 'Listen')}</strong>
+              <small>
+                {auditioning
+                  ? t('Il campo sta suonando', 'The field is playing')
+                  : t('Ascolta il campo sonoro', 'Listen to the sound field')}
+              </small>
+            </button>
             <div className="studio-render-modes">
               {PLAY_RENDER_MODES.filter((mode) => progression.unlockedRenderModeIds.includes(mode.id)).map((mode) => (
                 <button
@@ -384,9 +398,6 @@ export function StudioView() {
               ))}
             </div>
             <div className="studio-sound-actions">
-              <button type="button" className={auditioning ? 'is-playing' : ''} onClick={() => void toggleAudio()}>
-                {auditioning ? t('Silenzia', 'Silence') : t('Ascolta', 'Listen')}
-              </button>
               <button type="button" onClick={() => setSeedOpen(true)}>{t('Parliamo del progetto', "Let's talk about the project")}</button>
             </div>
             {stemSources.length > 0 ? (
