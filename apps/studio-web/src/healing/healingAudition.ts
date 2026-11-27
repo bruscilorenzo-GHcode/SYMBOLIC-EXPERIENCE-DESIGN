@@ -17,7 +17,10 @@ export class HealingAudition {
   private noiseSource: AudioBufferSourceNode | null = null
   private breathLfo: OscillatorNode | null = null
   private lfoDepth: GainNode | null = null
+  private slowDrift: OscillatorNode | null = null
   private pulseTimer: number | null = null
+  private shimmerTimer: number | null = null
+  private breathHz = 0.16
   private playing = false
 
   get isPlaying(): boolean {
@@ -89,10 +92,23 @@ export class HealingAudition {
     lfo.start()
     this.breathLfo = lfo
     this.lfoDepth = lfoDepth
+    this.breathHz = doppelganger?.breathHz ?? 1 / soundbed.breathSeconds
+
+    // Very slow drift on the first voice so the bed is never literally frozen.
+    const drift = context.createOscillator()
+    drift.type = 'sine'
+    drift.frequency.value = 0.017
+    const driftDepth = context.createGain()
+    driftDepth.gain.value = 4
+    const first = this.oscillators[0]
+    if (first) drift.connect(driftDepth).connect(first.detune)
+    drift.start()
+    this.slowDrift = drift
 
     master.gain.linearRampToValueAtTime(0.8, context.currentTime + 1.6)
     this.playing = true
-    this.schedulePulse(soundbed, doppelganger)
+    this.schedulePulse(soundbed)
+    this.scheduleShimmer(soundbed)
   }
 
   update(soundbed: HealingSoundbed, doppelganger: DoppelgangerSpec | null): void {
@@ -105,8 +121,8 @@ export class HealingAudition {
     this.filter?.frequency.setTargetAtTime(500 + soundbed.brightness * 1600, now, 0.8)
     this.airGain?.gain.setTargetAtTime(0.006 + soundbed.density * 0.02, now, 0.8)
     this.lfoDepth?.gain.setTargetAtTime(0.02 + soundbed.density * 0.03, now, 0.8)
-    const breathHz = doppelganger?.breathHz ?? 1 / soundbed.breathSeconds
-    this.breathLfo?.frequency.setTargetAtTime(breathHz, now, 0.8)
+    this.breathHz = doppelganger?.breathHz ?? 1 / soundbed.breathSeconds
+    this.breathLfo?.frequency.setTargetAtTime(this.breathHz, now, 0.8)
   }
 
   stop(): void {
@@ -119,18 +135,25 @@ export class HealingAudition {
       window.clearTimeout(this.pulseTimer)
       this.pulseTimer = null
     }
+    if (this.shimmerTimer !== null) {
+      window.clearTimeout(this.shimmerTimer)
+      this.shimmerTimer = null
+    }
     const oscillators = this.oscillators
     this.oscillators = []
     const noise = this.noiseSource
     this.noiseSource = null
     const lfo = this.breathLfo
     this.breathLfo = null
+    const drift = this.slowDrift
+    this.slowDrift = null
     window.setTimeout(() => {
       for (const oscillator of oscillators) {
         try { oscillator.stop() } catch { /* already stopped */ }
       }
       try { noise?.stop() } catch { /* already stopped */ }
       try { lfo?.stop() } catch { /* already stopped */ }
+      try { drift?.stop() } catch { /* already stopped */ }
       void context.close()
     }, 600)
     this.playing = false
@@ -138,10 +161,9 @@ export class HealingAudition {
     this.master = null
   }
 
-  private schedulePulse(soundbed: HealingSoundbed, doppelganger: DoppelgangerSpec | null): void {
+  private schedulePulse(soundbed: HealingSoundbed): void {
     if (!this.playing || !this.context || !this.master) return
     const context = this.context
-    const breathHz = doppelganger?.breathHz ?? 1 / soundbed.breathSeconds
     const pulse = context.createOscillator()
     pulse.type = 'sine'
     pulse.frequency.value = soundbed.droneHz * 1.5
@@ -153,7 +175,37 @@ export class HealingAudition {
     pulse.connect(pulseGain).connect(this.master)
     pulse.start()
     pulse.stop(context.currentTime + 0.7)
-    this.pulseTimer = window.setTimeout(() => this.schedulePulse(soundbed, doppelganger), (1 / breathHz) * 1000)
+    this.pulseTimer = window.setTimeout(
+      () => this.schedulePulse(soundbed),
+      (1 / Math.max(0.05, this.breathHz)) * 1000,
+    )
+  }
+
+  /**
+   * A quiet high partial every 20–34 s on a fixed pentatonic set, with a long
+   * fade. It keeps the bed alive without turning meditation into a melody.
+   */
+  private scheduleShimmer(soundbed: HealingSoundbed): void {
+    if (!this.playing || !this.context || !this.master) return
+    const context = this.context
+    const ratios = [3, 3.6, 4, 4.5, 5.4]
+    const ratio = ratios[Math.floor(Math.random() * ratios.length)]!
+    const voice = context.createOscillator()
+    voice.type = 'sine'
+    voice.frequency.value = soundbed.droneHz * ratio
+    voice.detune.value = (Math.random() * 2 - 1) * 6
+    const gain = context.createGain()
+    const start = context.currentTime
+    gain.gain.setValueAtTime(0.0001, start)
+    gain.gain.linearRampToValueAtTime(0.008, start + 2.4)
+    gain.gain.linearRampToValueAtTime(0.0001, start + 9)
+    voice.connect(gain).connect(this.master)
+    voice.start()
+    voice.stop(start + 9.4)
+    this.shimmerTimer = window.setTimeout(
+      () => this.scheduleShimmer(soundbed),
+      20000 + Math.random() * 14000,
+    )
   }
 }
 

@@ -1,9 +1,18 @@
 import { Midi } from '@tonejs/midi'
 import type { WorkletSynthesizer } from 'spessasynth_lib'
 import type { PlayComposition } from '@aura-spec/play-engine'
+import {
+  HeldNoteRegistry,
+  STEM_MAX_DURATION,
+  STEM_WINDOW_BEATS,
+  buildStemNotes,
+  clampMidi,
+  type StemPartId,
+} from './noteScheduler'
+
+export type { StemPartId } from './noteScheduler'
 
 export type StemGenreKey = 'HighPop-Long' | 'Cinematic' | 'Classics'
-export type StemPartId = 'drums' | 'bass' | 'pad' | 'lead'
 
 export interface StemSourceReadout {
   part: StemPartId
@@ -57,7 +66,9 @@ export class StemEngine {
   private queues = new Map<StemPartId, StemQueue>()
   private timer: number | null = null
   private noteTimers = new Set<number>()
+  private held = new HeldNoteRegistry()
   private advancing = false
+  private advanceCount = 0
   private sources: StemSourceReadout[] = []
   private composition: PlayComposition
   private tempo = 112
@@ -110,6 +121,7 @@ export class StemEngine {
     this.timer = null
     for (const timer of this.noteTimers) window.clearTimeout(timer)
     this.noteTimers.clear()
+    this.releaseHeld()
   }
 
   getSources(): StemSourceReadout[] {
@@ -117,14 +129,27 @@ export class StemEngine {
   }
 
   private windowMs(): number {
-    return Math.max(1200, (8 * 60 * 1000) / Math.max(30, this.tempo))
+    return Math.max(1600, (STEM_WINDOW_BEATS * 60 * 1000) / Math.max(30, this.tempo))
+  }
+
+  private releaseHeld(): void {
+    for (const { channel, midi } of this.held.releaseAll()) {
+      try {
+        this.synth.noteOff(channel, midi)
+      } catch {
+        // The voice may already be gone.
+      }
+    }
   }
 
   private async advance(): Promise<void> {
     if (!this.playing || this.advancing || !this.genre) return
     this.advancing = true
     try {
-      const now = this.context.currentTime + 0.06
+      const now = this.context.currentTime + 0.08
+      // Clean window boundary: nothing from the previous window may bleed in.
+      this.releaseHeld()
+      this.advanceCount += 1
       const nextSources: StemSourceReadout[] = []
       for (const [part, queue] of this.queues) {
         const config = this.genre.parts[part]
@@ -153,47 +178,66 @@ export class StemEngine {
     const channel = PART_CHANNELS[part]
     const sourceTempo = Math.max(30, stem.sourceTempo)
     const timeScale = sourceTempo / Math.max(30, this.tempo)
-    const windowEnd = stem.windowStart + stem.sourceWindowSeconds
     const density = this.composition.music.descriptor.density
     const brightness = this.composition.music.descriptor.brightness
-    const gate = part === 'pad' || part === 'bass' ? 0.92 : 0.62 + density * 0.3
+    const gate = part === 'pad' || part === 'bass' ? 0.9 : 0.55 + density * 0.35
+    // Slow drift so repeated windows are not literally identical.
+    const drift = Math.round(Math.sin(this.advanceCount * 0.63) * 1.4)
     const pitchShift = Math.round(
       (this.composition.parameters.water - 0.5) * 4 +
-        (this.composition.parameters.light - 0.5) * 2,
+        (this.composition.parameters.light - 0.5) * 2 +
+        drift,
     )
-    const granularity = Math.min(0.35, this.composition.parameters.wind * 0.22 + this.composition.music.descriptor.roughness * 0.15)
+    const granularity = Math.min(
+      0.3,
+      this.composition.parameters.wind * 0.18 + this.composition.music.descriptor.roughness * 0.12,
+    )
 
-    for (const note of stem.midi.tracks.flatMap((track) => track.notes)) {
-      if (note.time < stem.windowStart || note.time >= windowEnd) continue
-      if (Math.random() > gate) continue
-      const when = startTime + (note.time - stem.windowStart) * timeScale
-      const duration = Math.max(0.08, note.duration * timeScale)
-      const velocity = Math.max(1, Math.min(127, Math.round(note.velocity * 127 * (0.72 + brightness * 0.28))))
-      const midiNote = Math.max(0, Math.min(127, note.midi + pitchShift))
-      this.scheduleNote(channel, midiNote, velocity, when, duration)
-      if (granularity > 0.06 && Math.random() < granularity) {
-        this.scheduleNote(channel, midiNote, Math.round(velocity * 0.55), when + Math.min(0.22, duration * 0.5), Math.max(0.05, duration * 0.28))
-      }
+    const notes = buildStemNotes(
+      stem.midi.tracks.flatMap((track) => track.notes),
+      {
+        windowStart: stem.windowStart,
+        windowSeconds: stem.sourceWindowSeconds,
+        timeScale,
+        channel,
+        gate,
+        pitchShift,
+        granularity,
+        maxDurationSec: STEM_MAX_DURATION[part],
+        velocityScale: 0.72 + brightness * 0.28,
+        legatoSamePitch: part === 'pad' || part === 'bass',
+        rng: Math.random,
+      },
+    )
+
+    for (const note of notes) {
+      this.scheduleNote(note.channel, note.midi, note.velocity, startTime + note.atSec, note.durationSec)
     }
   }
 
   private scheduleNote(channel: number, note: number, velocity: number, when: number, duration: number): void {
     const delay = Math.max(0, (when - this.context.currentTime) * 1000)
+    const midi = clampMidi(note)
     const onTimer = window.setTimeout(() => {
-      try {
-        this.synth.noteOn(channel, note, velocity)
-      } catch {
-        // ignore
-      }
       this.noteTimers.delete(onTimer)
+      if (!this.playing) return
+      let generation: number
+      try {
+        if (this.held.isHeld(channel, midi)) this.synth.noteOff(channel, midi)
+        this.synth.noteOn(channel, midi, velocity)
+        generation = this.held.markOn(channel, midi)
+      } catch {
+        return
+      }
       const offTimer = window.setTimeout(() => {
+        this.noteTimers.delete(offTimer)
+        if (!this.held.markOff(channel, midi, generation)) return
         try {
-          this.synth.noteOff(channel, note)
+          this.synth.noteOff(channel, midi)
         } catch {
           // ignore
         }
-        this.noteTimers.delete(offTimer)
-      }, Math.max(50, duration * 1000))
+      }, Math.max(60, duration * 1000))
       this.noteTimers.add(offTimer)
     }, delay)
     this.noteTimers.add(onTimer)
@@ -226,9 +270,11 @@ export class StemEngine {
 
 class StemQueue {
   private order: number[] = []
-  private cursor = 0
+  private fileCursor = 0
   private prefetched = new Map<number, Promise<Midi>>()
-  private seenWindows = new Map<string, Set<number>>()
+  private current:
+    | { index: number; file: string; midi: Midi; windows: number; windowCursor: number }
+    | null = null
 
   constructor(
     private readonly part: StemPartId,
@@ -240,36 +286,44 @@ class StemQueue {
 
   async next(): Promise<LoadedStem> {
     if (this.files.length === 0) throw new Error(`No stems for ${this.part}`)
-    if (this.cursor >= this.order.length) this.shuffle()
-    const index = this.order[this.cursor % this.order.length]!
-    this.cursor += 1
-    const file = this.files[index]!
-    const midi = await this.load(index)
-    this.prefetch()
+    if (!this.current) await this.beginFile()
+    // Play a file's windows in order before moving on: the stems are authored
+    // as multi-section pieces, and jumping file every window reads as random.
+    while (this.current && this.current.windowCursor >= this.current.windows) {
+      await this.beginFile()
+    }
+    const state = this.current!
+    const midi = state.midi
     const sourceTempo = midi.header.tempos[0]?.bpm ?? this.tempo
-    const sourceWindowSeconds = (8 * 60) / Math.max(30, sourceTempo)
-    const windows = Math.max(1, Math.floor(midi.duration / sourceWindowSeconds))
-    let seen = this.seenWindows.get(file)
-    if (!seen) {
-      seen = new Set()
-      this.seenWindows.set(file, seen)
-    }
-    if (seen.size >= windows) seen.clear()
-    let windowIndex = Math.floor(Math.random() * windows)
-    let guard = 0
-    while (seen.has(windowIndex) && guard < windows * 2) {
-      windowIndex = (windowIndex + 1) % windows
-      guard += 1
-    }
-    seen.add(windowIndex)
+    const sourceWindowSeconds = (STEM_WINDOW_BEATS * 60) / Math.max(30, sourceTempo)
+    const windowIndex = state.windowCursor
+    state.windowCursor += 1
+    this.prefetch()
     return {
-      file,
-      source: file.split('/').pop() ?? file,
+      file: state.file,
+      source: state.file.split('/').pop() ?? state.file,
       midi,
       sourceTempo,
       windowStart: windowIndex * sourceWindowSeconds,
       sourceWindowSeconds,
       windowIndex,
+    }
+  }
+
+  private async beginFile(): Promise<void> {
+    if (this.fileCursor >= this.order.length) this.shuffle()
+    const index = this.order[this.fileCursor % this.order.length]!
+    this.fileCursor += 1
+    const midi = await this.load(index)
+    const sourceTempo = midi.header.tempos[0]?.bpm ?? this.tempo
+    const sourceWindowSeconds = (STEM_WINDOW_BEATS * 60) / Math.max(30, sourceTempo)
+    const windows = Math.max(1, Math.floor(midi.duration / sourceWindowSeconds))
+    this.current = {
+      index,
+      file: this.files[index]!,
+      midi,
+      windows,
+      windowCursor: 0,
     }
   }
 
@@ -283,7 +337,7 @@ class StemQueue {
 
   private prefetch(): void {
     for (let offset = 0; offset < 2; offset += 1) {
-      const index = this.order[(this.cursor + offset) % this.order.length]
+      const index = this.order[(this.fileCursor + offset) % this.order.length]
       if (index === undefined || this.prefetched.has(index)) continue
       this.prefetched.set(index, this.fetchMidi(index))
     }
@@ -302,7 +356,7 @@ class StemQueue {
       const j = Math.floor(Math.random() * (i + 1))
       ;[this.order[i], this.order[j]] = [this.order[j]!, this.order[i]!]
     }
-    this.cursor = 0
+    this.fileCursor = 0
   }
 }
 
