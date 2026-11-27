@@ -6,3 +6,11 @@ packages:
 allowBuilds:
   esbuild: true
   leveldown: true
+
+# The bundled AudioWorklet processor in apps/studio-web/public/sonifier is built
+# from spessasynth_lib 4.3.14. A newer library build speaks a different worklet
+# protocol, so isReady never resolves and the fallback audition never starts.
+# Pin the pair to the version the processor was shipped with.
+overrides:
+  spessasynth_lib: 4.3.14
+  spessasynth_core: 4.3.22

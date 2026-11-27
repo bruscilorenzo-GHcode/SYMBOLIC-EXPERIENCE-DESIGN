@@ -238,11 +238,14 @@ export class SyntagmaAudition {
   private async init(composition: PlayComposition): Promise<boolean> {
     if (this.initPromise) return this.initPromise
     this.initPromise = (async () => {
+      let context: AudioContext | null = null
       try {
-        const context = new AudioContext()
+        context = new AudioContext()
         await context.audioWorklet.addModule(PROCESSOR_URL)
         const synth = new WorkletSynthesizer(context, { eventsEnabled: true })
-        await synth.isReady
+        // A processor/library version mismatch makes isReady wait forever;
+        // time out so the oscillator fallback can take over instead of silence.
+        await withTimeout(synth.isReady, 8000, 'spessasynth isReady')
         const response = await fetch(SOUNDFONT_URL)
         if (!response.ok) throw new Error(`SoundFont HTTP ${response.status}`)
         await synth.soundBankManager.addSoundBank(await response.arrayBuffer(), 'default')
@@ -263,6 +266,11 @@ export class SyntagmaAudition {
         return true
       } catch (error) {
         console.warn('[SyntagmaAudition] SoundFont unavailable, using oscillator fallback:', error)
+        try {
+          await context?.close()
+        } catch {
+          // The context may already be closed.
+        }
         return false
       }
     })()
@@ -383,4 +391,23 @@ export class SyntagmaAudition {
     master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now)
     master.gain.linearRampToValueAtTime(value, now + seconds)
   }
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = window.setTimeout(
+      () => reject(new Error(`${label} timed out after ${timeoutMs} ms`)),
+      timeoutMs,
+    )
+    promise.then(
+      (value) => {
+        window.clearTimeout(timer)
+        resolve(value)
+      },
+      (error) => {
+        window.clearTimeout(timer)
+        reject(error)
+      },
+    )
+  })
 }
